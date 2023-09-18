@@ -2,12 +2,13 @@
 #define CHAPTER_3_ACCOUNT_H
 
 #include <string>
+#include <utility>
 
 class Account {
 public:
     // constructor
     Account(std::string accountName, int initialBalance)
-        : name{accountName} {
+        : name{std::move(accountName)} {
         if (initialBalance > 0) {
             balance = {initialBalance};
         }
@@ -32,17 +33,17 @@ public:
     }
 
     // balance getter
-    int getBalance() const {
+    [[nodiscard]] int getBalance() const {
         return balance;
     }
 
     // name setter
-    void setName(std::string accountName) {
+    void setName(const std::string& accountName) {
         name = {accountName};
     }
 
     // name getter
-    std::string getName() const {
+    [[nodiscard]] std::string getName() const {
         return name;
     }
 private:
