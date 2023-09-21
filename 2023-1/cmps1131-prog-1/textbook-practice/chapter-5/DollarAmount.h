@@ -7,6 +7,7 @@
 class DollarAmount {
 public:
     explicit DollarAmount(int64_t value);
+    int64_t getPennies() const;
     void add(DollarAmount right);
     void subtract(DollarAmount right);
     void addInterest(int rate, int divisor);

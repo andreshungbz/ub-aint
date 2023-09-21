@@ -2,6 +2,10 @@
 
 DollarAmount::DollarAmount(int64_t value) : amount{value} {}
 
+int64_t DollarAmount::getPennies() const {
+    return amount;
+}
+
 void DollarAmount::add(DollarAmount right) {
     amount += right.amount;
 }

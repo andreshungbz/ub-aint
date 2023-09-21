@@ -4,4 +4,6 @@ project(chapter_5)
 set(CMAKE_CXX_STANDARD 20)
 
 add_executable(chapter_5
-        bar-chart-printing.cpp)
+        calculating-sales.cpp
+        DollarAmount.cpp
+        DollarAmount.h)
