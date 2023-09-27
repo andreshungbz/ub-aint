@@ -1,5 +1,11 @@
 // Student Class Definition
 
+// The Student Class contains a number of data members representing some properties
+// that a student object can have as well as setters and getters for each.
+
+// Note: const reference parameters are used to obtain the security of pass-by-value
+// while avoiding the expense of copying string objects.
+
 #ifndef PROBLEM_SET_1_STUDENT_H
 #define PROBLEM_SET_1_STUDENT_H
 
@@ -7,8 +13,8 @@
 
 class Student {
 public:
-    // constructor
-    Student(const std::string& fn, const std::string& ln);
+    // constructor (default sets empty strings for firstName and lastName)
+    explicit Student(const std::string& fn = "", const std::string& ln = "");
 
     // function members
     // firstName setter and getter
@@ -42,10 +48,14 @@ private:
     // data members
     std::string firstName;
     std::string lastName;
+    // date of birth
     std::string dob;
-    float gpa;
-    char gender;
-    char status;
+    // grade point average
+    float gpa{};
+    // refers to sex and not gender identity
+    char gender{};
+    // marital status
+    char status{};
     std::string id;
 };
 

@@ -15,7 +15,7 @@ Student::Student(const std::string& fn, const std::string& ln) {
 
 // firstName setter and getter
 void Student::setFirstName(const std::string& fn) {
-    // https://stackoverflow.com/a/9642381
+    // if the first name entered contains a number, set to an empty string
     firstName = std::any_of(fn.begin(), fn.end(), ::isdigit) ? "" : fn;
 }
 const std::string& Student::getFirstName() const {
@@ -24,7 +24,7 @@ const std::string& Student::getFirstName() const {
 
 // lastName setter and getter
 void Student::setLastName(const std::string& ln) {
-    // https://stackoverflow.com/a/9642381
+    // if the last name entered contains a number, set to an empty string
     lastName = std::any_of(ln.begin(), ln.end(), ::isdigit) ? "" : ln;
 }
 const std::string& Student::getLastName() const {
@@ -41,6 +41,7 @@ const std::string& Student::getDob() const {
 
 // gpa setter and getter
 void Student::setGPA(float newGPA) {
+    // if the gpa entered is outside the range 0 - 4, set to 0
     gpa = (newGPA < 0 || newGPA > 4) ? 0 : newGPA;
 }
 float Student::getGPA() const {
@@ -49,7 +50,8 @@ float Student::getGPA() const {
 
 // gender setter and getter
 void Student::setGender(char newGender) {
-    gender = (newGender != 'm' && newGender != 'f') ? 'm' : newGender;
+    // only permit genders male (m) and female (f), defaulting to male for any other entered character
+    gender = (newGender == 'm' || newGender == 'f') ? newGender : 'm';
 }
 char Student::getGender() const {
     return gender;
@@ -57,7 +59,8 @@ char Student::getGender() const {
 
 // status setter and getter
 void Student::setStatus(char newStatus) {
-    status = (newStatus != 's' && newStatus != 'm') ? 's' : newStatus;
+    // only permit statuses single (s) and married (m), defaulting to single for any other entered character
+    status = (newStatus == 's' || newStatus == 'm') ? newStatus : 's';
 }
 char Student::getStatus() const {
     return status;
