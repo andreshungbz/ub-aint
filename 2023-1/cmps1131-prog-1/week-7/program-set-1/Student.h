@@ -13,10 +13,10 @@
 
 class Student {
 public:
-    // constructor (default sets empty strings for firstName and lastName)
+    // Constructor (default sets empty strings for firstName and lastName)
     explicit Student(const std::string& fn = "", const std::string& ln = "");
 
-    // function members
+    // Function Members
     // firstName setter and getter
     void setFirstName(const std::string& fn);
     [[nodiscard]] const std::string& getFirstName() const;
@@ -45,17 +45,20 @@ public:
     void setID(const std::string& newID);
     [[nodiscard]] const std::string& getID() const;
 private:
-    // data members
+    // Data Members
+    // first name
     std::string firstName;
+    // last name
     std::string lastName;
     // date of birth
     std::string dob;
     // grade point average
     float gpa{};
-    // refers to sex and not gender identity
+    // gender (refers to sex and not gender identity)
     char gender{};
     // marital status
     char status{};
+    // student id
     std::string id;
 };
 

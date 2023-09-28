@@ -1,12 +1,15 @@
 // [CMPS1131-1] Programming 1
-// Program Set 1
-// Andres Hung
+// Program Set 1 - Classes
+// Done by Andres Hung
 // Date Due: October 9, 2023
+
+// Student and Converter Classes Driver Program
 
 #include <iostream>
 #include "Student.h"
 #include "Converter.h"
 
+// function for printing student object data members
 void printStudent(const Student& stu);
 
 int main() {

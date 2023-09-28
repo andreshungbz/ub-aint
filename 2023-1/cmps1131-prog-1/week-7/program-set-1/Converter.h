@@ -11,7 +11,7 @@
 
 class Converter {
 public:
-    // function members
+    // Function Members
     // generates username in the format "fn[0]ln"
     static std::string generateUsername(std::string fn, const std::string& ln);
     // returns title based on gender and status ("Mr.", "Ms.", "Mrs.")

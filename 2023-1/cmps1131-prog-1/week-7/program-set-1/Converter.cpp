@@ -4,6 +4,7 @@
 
 // generateUsername function
 std::string Converter::generateUsername(std::string fn, const std::string& ln) {
+    // fn[0] accesses the first character of string fn
     return fn[0] + ln;
 }
 
