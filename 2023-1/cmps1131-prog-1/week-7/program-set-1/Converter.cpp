@@ -10,10 +10,12 @@ std::string Converter::generateUsername(std::string fn, const std::string& ln) {
 
 // getTitle function
 std::string Converter::getTitle(char gender, char status) {
-    if (gender == 'f' && status == 's') {
-        return "Ms.";
-    } else if (gender == 'f' && status == 'm') {
-        return "Mrs.";
+    if (gender == 'f') {
+        if (status == 's') {
+            return "Ms.";
+        } else {
+            return "Mrs.";
+        }
     } else {
         return "Mr.";
     }

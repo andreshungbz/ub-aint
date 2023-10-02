@@ -16,7 +16,7 @@ Student::Student(const std::string& fn, const std::string& ln) {
 // firstName setter and getter
 void Student::setFirstName(const std::string& fn) {
     // if the first name entered contains a number, set to an empty string
-    // https://stackoverflow.com/a/9642381
+    // adapted from https://stackoverflow.com/a/9642381
     firstName = std::any_of(fn.begin(), fn.end(), ::isdigit) ? "" : fn;
 }
 const std::string& Student::getFirstName() const {
@@ -26,7 +26,7 @@ const std::string& Student::getFirstName() const {
 // lastName setter and getter
 void Student::setLastName(const std::string& ln) {
     // if the last name entered contains a number, set to an empty string
-    // https://stackoverflow.com/a/9642381
+    // adapted from https://stackoverflow.com/a/9642381
     lastName = std::any_of(ln.begin(), ln.end(), ::isdigit) ? "" : ln;
 }
 const std::string& Student::getLastName() const {
