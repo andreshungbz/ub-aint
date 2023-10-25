@@ -4,6 +4,4 @@ project(chapter_5)
 set(CMAKE_CXX_STANDARD 20)
 
 add_executable(chapter_5
-        calculating-sales.cpp
-        DollarAmount.cpp
-        DollarAmount.h)
+        triangle-printing.cpp)
