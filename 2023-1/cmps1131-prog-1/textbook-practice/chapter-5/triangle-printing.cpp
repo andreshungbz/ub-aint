@@ -7,7 +7,7 @@ void triangleD(int height);
 void triangleDisplay(int height);
 
 int main() {
-    triangleDisplay(10);
+    triangleD(10);
     return 0;
 }
 
