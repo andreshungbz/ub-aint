@@ -115,7 +115,7 @@ void numberGuess() {
                 std::cout << "\nExcellent! You guessed the number in " << numberOfGuesses << " guesses!\n";
 
                 // program set specification specifically indicates both <= 10 and == 10
-                // so exactly 10 guesses displays 2 messages
+                // so having exactly 10 guesses displays 2 messages
                 if (numberOfGuesses <= 10) {
                     std::cout << "Either you know the secret or you got lucky!\n";
                 }
@@ -135,7 +135,7 @@ void numberGuess() {
                     randomNumber = range(mt);
                     guess = 0;
                     numberOfGuesses = 0;
-                    // break out of loop but maintaining game true so that another game is played
+                    // break out of loop but maintain game true so that another game is played
                     break;
                 } else {
                     // this will break out of the inner and outer while loops
