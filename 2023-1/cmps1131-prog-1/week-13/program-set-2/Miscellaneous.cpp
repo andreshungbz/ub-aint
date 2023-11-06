@@ -12,7 +12,7 @@
 // used in number guessing game
 #include <random>
 
-// additional opportune abstractions are abstracted in Utilities.h and Utilities.cpp
+// additional opportune abstractions are abstracted in MiscUtilities.h and MiscUtilities.cpp
 #include "MiscUtilities.h"
 
 void multiplication() {
