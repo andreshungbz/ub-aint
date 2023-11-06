@@ -29,6 +29,8 @@ int main() {
             case 3: printSquare(); cout << "\n\n"; break;
             case 4: calculatePayroll(); cout << "\n\n"; break;
         }
+        // system("pause") is Windows specific
+        // https://www.digitalocean.com/community/tutorials/system-pause-command-c-plus-plus
         system("pause");
     }
 
@@ -37,7 +39,9 @@ int main() {
 }
 
 void showMenu() {
-    system("cls");
+    // adding system("clear") for macOS/Linux
+    // https://stackoverflow.com/a/74446291/22647886
+    if (system("cls")) system("clear");
     cout << "***********************************\n";
     cout << "* Press 1 to do multiplication    *\n";
     cout << "* Press 2 to play number guessing *\n";

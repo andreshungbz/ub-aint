@@ -151,7 +151,7 @@ void printSquare() {
 
     // enforce size constraint 1 - 20
     while (!(size >= 1 && size <= 20)) {
-        std::cout << "Enter size of square (1 - 20): ";
+        std::cout << "Enter the size of square (1 - 20): ";
         std::cin >> size;
     }
 
