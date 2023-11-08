@@ -1,7 +1,8 @@
-// Miscellaneous Functions Implementation
-// Project Info in driver.cpp
+// [CMPS1131-1] Principles of Programming 1 / Section 1
+// Program Set 2 / Andres Hung / Date Due: November 19, 2023
 
-// implementation of the program set functions
+// Miscellaneous Functions Implementation
+// required program set functions
 
 #include "Miscellaneous.h"
 #include <iostream>
@@ -30,7 +31,7 @@ void multiplication() {
         int secondNumber{1 + std::rand() % 9};
         int answer{firstNumber * secondNumber};
 
-        // generate random feedback response numbers
+        // generate random feedback response numbers for both correct and incorrect answers
         int correctFeedback{1 + std::rand() % 4};
         int incorrectFeedback{1 + std::rand() % 4};
 
@@ -39,6 +40,7 @@ void multiplication() {
         std::cin >> response;
 
         if (response == answer) {
+            // only increment when the correct answer is obtained the first time
             ++correctCount;
             // display random correct feedback response
             multiplicationFeedback(true, correctFeedback);
@@ -63,12 +65,12 @@ void multiplication() {
         }
     }
 
-    // display practice percentage
+    // display practice percentage (to the second decimal place)
     double practicePercentage{static_cast<double>(correctCount) / numberOfQuestions * 100};
     std::cout << std::setprecision(2) << std::fixed;
     std::cout << "\nYour percentage of correct responses is " << practicePercentage << "%!\n";
 
-    // additional feedback indicated in case of percentage being less than 75%
+    // indicate additional feedback in case of percentage being less than 75%
     if (practicePercentage < 75.0) {
         std::cout << "Please ask your instructor for extra help.\n";
     }
@@ -86,19 +88,21 @@ void numberGuess() {
     std::mt19937 mt{ss};
     std::uniform_int_distribution<> range{1, 1000};
 
+    // generate the random number and set the initial game state
     int randomNumber{range(mt)};
     int guess{0};
     int numberOfGuesses{0};
-    bool game{true};
 
     // the outer while loop is for every new game state
     // the inner while loop is for every guess made
     while (guess != randomNumber) {
+        // displays this only on every new game state
         std::cout << "\nI have a number between 1 and 1000.\n"
             << "Can you guess my number?\n"
             << "Please type your first guess.\n";
 
-        while (guess != randomNumber && game) {
+        // checking for game allows this to be skipped
+        while (guess != randomNumber) {
             std::cout << "Guess [" << numberOfGuesses + 1 << "]: ";
             std::cin >> guess;
 
@@ -131,16 +135,14 @@ void numberGuess() {
                 std::cin >> response;
 
                 if (response == 'y' || response == 'Y') {
-                    // reset the game state
+                    // generate a new random number and reset the game state
                     randomNumber = range(mt);
                     guess = 0;
                     numberOfGuesses = 0;
-                    // break out of loop but maintain game true so that another game is played
-                    break;
-                } else {
-                    // this will break out of the inner and outer while loops
-                    game = false;
                 }
+
+                // if the game state was reset, this goes back to the outer loop
+                break;
             }
         }
     }
@@ -186,6 +188,7 @@ void printSquare() {
 
 void calculatePayroll() {
     int payCode{0};
+    // this will control continued prompts
     bool payRoll{true};
 
     std::cout << "Employee Pay Codes\n"
@@ -215,8 +218,11 @@ void calculatePayroll() {
                 break;
             case 4:
                 calculatePieceworker();
+                break;
             case 5:
+                // this will end the continued prompts for employees
                 payRoll = false;
+                break;
             default:
                 break;
         }

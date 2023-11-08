@@ -1,6 +1,7 @@
-// MiscUtilities Header File
-// Project Info in driver.cpp
+// [CMPS1131-1] Principles of Programming 1 / Section 1
+// Program Set 2 / Andres Hung / Date Due: November 19, 2023
 
+// MiscUtilities Header File
 // these functions are opportune abstractions for the function implementations in Miscellaneous.cpp
 
 #ifndef PROGRAM_SET_2_MISCUTILITIES_H
@@ -17,4 +18,4 @@ void calculateCommissionWorker();
 // function that calculates and displays weekly pay for pieceworkers
 void calculatePieceworker();
 
-#endif //PROGRAM_SET_2_MISCUTILITIES_H
+#endif // PROGRAM_SET_2_MISCUTILITIES_H

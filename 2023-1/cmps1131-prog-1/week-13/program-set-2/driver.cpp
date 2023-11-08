@@ -1,10 +1,8 @@
-// [CMPS1131-1] Programming 1
-// Program Set 2 - Miscellaneous Functions
-// Done by Andres Hung
-// Date Due: November 19, 2023
+// [CMPS1131-1] Principles of Programming 1 / Section 1
+// Program Set 2 / Andres Hung / Date Due: November 19, 2023
 
-// Driver Program for the functions in Miscellaneous
-// Functions in MiscUtilities are abstracted from Miscellaneous
+// Driver program for the functions in Miscellaneous
+// functions in MiscUtilities are abstracted from Miscellaneous
 
 #include <iostream>
 using std::cout;

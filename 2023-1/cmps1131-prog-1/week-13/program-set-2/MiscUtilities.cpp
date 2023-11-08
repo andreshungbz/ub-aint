@@ -1,7 +1,8 @@
-// MiscUtilities Functions Implementation
-// Project Info in driver.cpp
+// [CMPS1131-1] Principles of Programming 1 / Section 1
+// Program Set 2 / Andres Hung / Date Due: November 19, 2023
 
-// implementation of additional functions used in Miscellaneous.cpp
+// MiscUtilities Functions Implementation
+// additional functions used in Miscellaneous.cpp
 
 #include "MiscUtilities.h"
 #include <iostream>
@@ -39,6 +40,7 @@ void multiplicationFeedback(bool positive, int number) {
                 break;
             case 4:
                 std::cout << "No. Keep trying.\n";
+                break;
             default:
                 break;
         }
@@ -78,6 +80,7 @@ void calculateHourlyWorker() {
         std::cin >> hourlyRate;
     }
 
+    // extra hours is set to 0 in case there is no overtime
     int extraHours{hours > hourlyOvertimeThreshold ? hours - hourlyOvertimeThreshold : 0};
     double weeklyPay{((hours - extraHours) * hourlyRate) + (extraHours * hourlyRate * hourlyOvertimeRate)};
     std::cout << "Your pay for this week is therefore $" << weeklyPay << "\n";
