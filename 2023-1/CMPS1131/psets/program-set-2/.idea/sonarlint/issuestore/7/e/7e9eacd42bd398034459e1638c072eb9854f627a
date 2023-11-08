@@ -1,17 +1,0 @@
-
-acpp:S1348"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(¡ïÄé
-E	cpp:S5020"0Replace "srand" with the facilities in <random>.(èŸí¨
-Y	cpp:S6229"DReplace this use of "time" with equivalent code using "std::chrono".(èŸí¨
-D	cpp:S5020"/Replace "rand" with the facilities in <random>.(Ï‚ÉÄ
-D	cpp:S5020"/Replace "rand" with the facilities in <random>.(ö¾áã
-D	cpp:S5020#"/Replace "rand" with the facilities in <random>.(İËŞÍ
-D	cpp:S5020$"/Replace "rand" with the facilities in <random>.(‘Üó
-D	cpp:S5020="/Replace "rand" with the facilities in <random>.(Æğè‚
-n	cpp:S3776O"TRefactor this function to reduce its Cognitive Complexity from 29 to the 25 allowed.(›ÈŒ¦ıÿÿÿÿ
-acpp:S134{"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(Á…Ù”
-acpp:S134~"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(¡©áÎ
-gcpp:S134"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(Ä‚Àİşÿÿÿÿ
-gcpp:S134‰"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(Ã¨ˆáşÿÿÿÿ
-|	cpp:S6012Y"gAvoid explicitly specifying the template arguments by relying on the class template argument deduction.(ó™æ¶
-bcpp:S134®"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(Çø„–
-gcpp:S134³"MRefactor this code to not nest more than 3 if|for|do|while|switch statements.(È´‰£ûÿÿÿÿ
