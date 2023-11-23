@@ -1,4 +1,5 @@
 #include <iostream>
+// #include <limits>
 using namespace std;
 
 int findSmallest(int);
@@ -20,6 +21,7 @@ int main() {
 int findSmallest(int inputs) {
     // assumption: input is greater than 0
     // use the first input as reference because I forgot how to use limits library to compare to the max integer
+    // int max{std::numeric_limits<int>::max()};
     cout << "Enter a number: ";
     int smallest;
     cin >> smallest;
