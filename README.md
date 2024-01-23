@@ -12,5 +12,7 @@ Folders are divided by semester, course, and assessment type.
     - `[CMPS1131]` Principles of Programming 1
     - `[CMPS1134]` Fundamentals of Computing
 - `2023-2` Spring Semester (January 2024 to May 2024)
+    - `[CMPS1171]` Introduction to Databases
+    - `[CMPS1232]` Principles of Programming 2
 - `2024-1` Fall Semester (August 2024 to December 2024)
 - `2024-2` Spring Semester (January 2025 to May 2025)
