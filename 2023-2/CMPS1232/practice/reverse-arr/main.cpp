@@ -31,7 +31,6 @@ int main() {
     return 0;
 }
 
-// array is copied twice but integers are relatively cheap to copy
 template <typename T, std::size_t N>
 std::array<T, N> reverseArray(std::array<T, N> arr) {
     // for keeping track of array from the end
@@ -44,5 +43,5 @@ std::array<T, N> reverseArray(std::array<T, N> arr) {
         std::swap(arr[i], arr[sizeIndex--]);
     }
 
-    return arr;
+    return std::move(arr);
 }
