@@ -1,6 +1,6 @@
 #include <array>
 #include <iostream>
-#include <utility> // for std::swap
+#include <utility> // for std::swap, std::move
 
 template <typename T, std::size_t N>
 std::array<T, N> reverseArray(std::array<T, N> arr);
