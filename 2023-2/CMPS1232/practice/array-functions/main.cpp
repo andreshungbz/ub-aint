@@ -6,12 +6,11 @@ int mostFrequent(const int arr[], std::size_t len);
 
 int main() {
     const std::size_t size{5};
-    int array[size] {1, 2, 3, 4, 5};
-    int array2[size] {8, 1, 6, 7, 1};
+    int array[size] {8, 1, 6, 7, 1};
 
     std::cout << "Sum of Array: " << sumArray(array, size) << '\n';
     std::cout << "Largest in Array: " << largestInArray(array, size) << '\n';
-    std::cout << "Most Frequent Element: " << mostFrequent(array2, size) << '\n';
+    std::cout << "Most Frequent Element: " << mostFrequent(array, size) << '\n';
 
     return 0;
 }

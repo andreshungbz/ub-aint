@@ -8,4 +8,4 @@ CREATE TABLE
         date_acquired DATE NOT NULL DEFAULT CURRENT_DATE
     );
 
-\copy stocks (symbol, num_shares, date_acquired) FROM './stocks.txt' DELIMITER ',';
+-- \copy stocks (symbol, num_shares, date_acquired) FROM './stocks.txt' DELIMITER ',';
