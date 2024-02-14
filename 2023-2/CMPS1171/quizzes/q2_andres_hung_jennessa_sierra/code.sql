@@ -20,8 +20,7 @@ VALUES
 ('Jane', 'Smith', 'female'),
 ('Jill', 'Sosa', 'female'),
 ('Josh', 'Sullivan', 'male'),
-('Joseph', 'Suggs', 'male'),
-('Jack', 'Dale', 'male');
+('Joseph', 'Suggs', 'male');
 
 INSERT INTO course (name, lecturer_id)
 VALUES
