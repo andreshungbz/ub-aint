@@ -1,7 +1,49 @@
 #include <iostream>
 
 template <typename T>
-void print2DArray(const T arr[3][3], std::size_t rows, std::size_t cols) {
+void print3x3Array(const T arr[3][3], std::size_t rows, std::size_t cols);
+
+template <typename T>
+T findSum(T arr[3][3], std::size_t rows, std::size_t cols);
+
+template <typename T>
+T findProduct(T arr[3][3], std::size_t rows, std::size_t cols);
+
+void printOddNumbers(int arr[3][3], std::size_t rows, std::size_t cols);
+
+template <typename T>
+T findSumDiagonal(const T arr[3][3], std::size_t rows, std::size_t cols);
+
+int main() {
+    const std::size_t rowSize{3};
+    const std::size_t colSize{3};
+
+    int array[rowSize][colSize] {
+        {1, 2, 3},
+        {5, 6, 7},
+        {9, 10, 11}
+    };
+
+    std::cout << "Initial Array\n";
+    print3x3Array(array, rowSize, colSize);
+    std::cout << '\n';
+
+    std::cout << "findSum: " << findSum(array, rowSize, colSize) << '\n';
+    std::cout << "findProduct: " << findProduct(array, rowSize, colSize) << '\n';
+
+    std::cout << "Odd Numbers: ";
+    printOddNumbers(array, rowSize, colSize);
+    std::cout << '\n';
+
+    std::cout << "findSumDiagonal Output: ";
+    int diagonalSum{findSumDiagonal(array, rowSize, colSize)};
+    std::cout << "\nfindSumDiagonal Sum: " << diagonalSum << '\n';
+
+    return 0;
+}
+
+template <typename T>
+void print3x3Array(const T arr[3][3], std::size_t rows, std::size_t cols) {
     for (std::size_t i{0}; i < rows; ++i) {
         bool first{true};
         for (std::size_t j{0}; j < cols; ++j) {
@@ -44,8 +86,7 @@ T findProduct(T arr[3][3], std::size_t rows, std::size_t cols) {
     return product;
 }
 
-template <typename T>
-void printOddNumbers(T arr[3][3], std::size_t rows, std::size_t cols) {
+void printOddNumbers(int arr[3][3], std::size_t rows, std::size_t cols) {
     bool first{true};
 
     for (std::size_t i{0}; i < rows; ++i) {
@@ -84,32 +125,4 @@ T findSumDiagonal(const T arr[3][3], std::size_t rows, std::size_t cols) {
     }
 
     return sum;
-}
-
-int main() {
-    const std::size_t rowSize{3};
-    const std::size_t colSize{3};
-
-    int array[rowSize][colSize] {
-        {1, 2, 3},
-        {5, 6, 7},
-        {9, 10, 11}
-    };
-
-    std::cout << "Initial Array\n";
-    print2DArray(array, rowSize, colSize);
-    std::cout << '\n';
-
-    std::cout << "findSum: " << findSum(array, rowSize, colSize) << '\n';
-    std::cout << "findProduct: " << findProduct(array, rowSize, colSize) << '\n';
-
-    std::cout << "Odd Numbers: ";
-    printOddNumbers(array, rowSize, colSize);
-    std::cout << '\n';
-
-    std::cout << "findSumDiagonal Output: ";
-    int diagonalSum{findSumDiagonal(array, rowSize, colSize)};
-    std::cout << "\nfindSumDiagonal Sum: " << diagonalSum << '\n';
-
-    return 0;
 }
