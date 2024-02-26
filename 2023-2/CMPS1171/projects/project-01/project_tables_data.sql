@@ -18,7 +18,7 @@ CREATE DATABASE music;
 DROP ROLE IF EXISTS music;
 CREATE ROLE music WITH LOGIN PASSWORD '$swordfish$';
 
--- psql@16 only - grant privileges to music user as postgres superuser
+-- psql@15+ only - grant privileges to music user as postgres superuser
 \c music
 GRANT ALL PRIVILEGES ON SCHEMA public TO music;
 \c music music
