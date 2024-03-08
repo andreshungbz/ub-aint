@@ -19,9 +19,9 @@ DROP ROLE IF EXISTS music;
 CREATE ROLE music WITH LOGIN PASSWORD '$swordfish$';
 
 -- psql@15+ only - grant privileges to music user as postgres superuser
-\c music
-GRANT ALL PRIVILEGES ON SCHEMA public TO music;
-\c music music
+-- \c music postgres
+-- GRANT ALL PRIVILEGES ON SCHEMA public TO music;
+-- \c music music
 
 /* CREATE TABLES */
 
@@ -50,7 +50,7 @@ CREATE TABLE
         address TEXT NOT NULL, -- assume one address
         district INT,
         phone TEXT NOT NULL, -- assume one phone number
-        email TEXT, -- assume one email address
+        email TEXT NOT NULL, -- assume one email address
         FOREIGN KEY (district) REFERENCES districts (district_id)
     );
 
@@ -168,3 +168,18 @@ VALUES
     (9, 8),
     (10, 9),
     (11, 10);
+
+-- SELECT *
+-- FROM districts;
+
+-- SELECT *
+-- FROM artists;
+
+-- SELECT *
+-- FROM venues;
+
+-- SELECT *
+-- FROM shows;
+
+-- SELECT *
+-- FROM performances;
