@@ -62,11 +62,92 @@
 -- GROUP BY lastname, firstname;
 
 -- M
-SELECT lastname, firstname, phone
-FROM customer
-WHERE customerid IN (
-    SELECT customerid
-    FROM invoice
-    WHERE totalamount > 100.00
-    )
-ORDER BY lastname, firstname DESC;
+-- SELECT lastname, firstname, phone
+-- FROM customer
+-- WHERE customerid IN (
+--     SELECT customerid
+--     FROM invoice
+--     WHERE totalamount > 100.00
+--     )
+-- ORDER BY lastname, firstname DESC;
+
+-- N
+-- SELECT lastname, firstname, phone
+-- FROM customer C, invoice I
+-- WHERE C.customerid = I.customerid
+-- AND I.totalamount > 100.00
+-- ORDER BY lastname, firstname DESC;
+
+-- O
+-- SELECT lastname, firstname, phone
+-- FROM customer C
+-- INNER JOIN invoice I
+-- ON C.customerid = I.customerid
+-- WHERE I.totalamount > 100.00
+-- ORDER BY lastname, firstname DESC;
+
+-- P
+-- SELECT lastname, firstname, phone
+-- FROM customer
+-- WHERE customerid IN (
+--     SELECT customerid
+--     FROM invoice
+--     WHERE invoicenumber IN (
+--         SELECT invoicenumber
+--         FROM invoice_item
+--         WHERE item = 'Dress Shirt'
+--         )
+--     )
+-- ORDER BY lastname, firstname DESC;
+
+-- Q
+-- SELECT lastname, firstname, phone
+-- FROM customer C, invoice I, invoice_item IT
+-- WHERE C.customerid = I.customerid
+-- AND I.invoicenumber = IT.invoicenumber
+-- AND IT.item = 'Dress Shirt'
+-- ORDER BY lastname, firstname DESC;
+
+-- R
+-- SELECT lastname, firstname, phone
+-- FROM customer C
+-- INNER JOIN invoice I
+-- ON C.customerid = I.customerid
+-- INNER JOIN invoice_item IT
+-- ON I.invoicenumber = IT.invoicenumber
+-- WHERE IT.item = 'Dress Shirt'
+-- ORDER BY lastname, firstname DESC;
+
+-- S
+-- SELECT 
+--     C1.lastname customer_last_name,
+--     C1.firstname customer_first_name,
+--     C2.lastname referredby_lastname,
+--     C2.firstname referredby_firstname
+-- FROM customer C1
+-- LEFT OUTER JOIN customer C2
+-- ON C1.referredby = C2.customerid;
+
+-- T
+-- SELECT lastname, firstname, phone
+-- FROM customer C
+-- INNER JOIN invoice I USING (customerid)
+-- WHERE I.invoicenumber IN (
+--     SELECT invoicenumber
+--     FROM invoice_item
+--     WHERE item = 'Dress Shirt'
+--     )
+-- ORDER BY lastname, firstname DESC;
+
+-- U
+SELECT lastname, firstname, phone, temp.totalamount
+FROM customer C
+LEFT OUTER JOIN (
+    SELECT I.invoicenumber, I.customerid, I.totalamount
+    FROM invoice I
+    INNER JOIN invoice_item IT
+    ON I.invoicenumber = IT.invoicenumber
+    WHERE IT.item = 'Dress Shirt'
+) temp
+ON C.customerid = temp.customerid
+ORDER BY temp.totalamount, lastname, firstname DESC;
