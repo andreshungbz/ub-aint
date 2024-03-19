@@ -162,26 +162,21 @@ char* my_strtok(char* s1, const char* s2) {
     static char* token{};
 
     // if s1 is not nullptr, then assign initial string, else reuse token
-    if (s1)
-        token = s1;
+    if (s1) token = s1;
 
-    char* startPtr{token};
-    bool found{false};
-
-    while (true) {
-        // replace delimiter with null terminator
-        if (*token == *s2) {
-            *token++ = '\0';
-            found = true;
-            break;
-        }
-
-        // if at the end of string, break
-        if (*token != '\0')
-            ++token;
-        else
-            break;
+    if (token == nullptr) {
+        return nullptr;
     }
 
-    return found ? startPtr : nullptr;
+    char* startPtr{token};
+    for (char* c{startPtr}; *c != '\0'; ++c) {
+        if (*c == *s2) {
+            *c = '\0';
+            token = c + 1;
+            return startPtr;
+        }
+    }
+
+    token = nullptr;
+    return startPtr;
 }
