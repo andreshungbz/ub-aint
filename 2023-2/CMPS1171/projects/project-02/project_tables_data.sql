@@ -197,7 +197,7 @@ VALUES
     ('Matthew', 'Neal', '2021-10-05', 'm', NULL, 18, 1),
     ('Sophia', 'Neal', '2021-08-22', 'f', NULL, 18, 2);
 
-INSERT INTO parent_student (student_id, parent_id)
+INSERT INTO parent_student (parent_id, student_id)
 VALUES
     (1, 1),
     (2, 2),
