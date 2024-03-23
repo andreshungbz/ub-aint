@@ -30,7 +30,6 @@ ON S.classroom = C.classroom_id
 INNER JOIN buildings AS B
 ON C.building = B.building_id;
 
-
 -- 5. For each parent, show their children's names
 SELECT
     P.first_name AS parent_fname,
@@ -43,11 +42,9 @@ USING (parent_id)
 INNER JOIN students AS S
 USING (student_id);
 
-
 -- 6. For each teacher, show their email and phone number
 SELECT first_name, last_name, contact_email, contact_phone
 FROM teachers;
-
 
 -- 7. Queries for number of students in each classroom
 SELECT COUNT(*) AS students_toucan
