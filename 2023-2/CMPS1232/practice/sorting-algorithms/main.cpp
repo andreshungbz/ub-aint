@@ -20,14 +20,20 @@ void merge(T* array, int p, int q, int r);
 template <typename T>
 void mergeSort(T* array, int l, int r);
 
+template <typename T>
+int partition(T* array, int start, int end);
+
+template <typename T>
+void quickSort(T* array, int start, int end);
+
 int main() {
-    const std::size_t size{5};
-    int array[size] {5, 3, 2, 10, 7};
+    const std::size_t size{10};
+    int array[size] {37, 2, 6, 4, 89, 8, 10, 12, 68, 45};
 
     std::cout << "Initial Array: ";
     print1DArray(array, size);
 
-    mergeSort(array, 0, size - 1);
+    quickSort(array, 0, size - 1);
     std::cout << "\nSorted Array: ";
     print1DArray(array, size);
 
@@ -149,4 +155,58 @@ void mergeSort(T* array, int l, int r) {
         // Merge the sorted subarrays
         merge(array, l, m, r);
     }
+}
+
+template <typename T>
+int partition(T* array, int start, int end) {
+    if (start == end) {
+        return -1;
+    }
+
+    T* startPtr {array + start};
+    T* endPtr {array + end};
+
+    while (*endPtr > *startPtr) {
+        --endPtr;
+    }
+
+    if (startPtr == endPtr) {
+        return startPtr - array;
+    }
+
+    T temp {*startPtr};
+    *startPtr = *endPtr;
+    *endPtr = temp;
+
+    ++startPtr;
+
+    while (*startPtr < *endPtr) {
+        ++startPtr;
+    }
+
+    temp = *startPtr;
+    *startPtr = *endPtr;
+    *endPtr = temp;
+
+    if (startPtr == endPtr) {
+        return startPtr - array;
+    }
+
+    int index {partition(array, startPtr - array, (endPtr - 1) - array)};
+
+    return index;
+}
+
+template <typename T>
+void quickSort(T* array, int start, int end) {
+    if (start >= end) return;
+
+    int index{partition(array, start, end)};
+
+    if (index == -1) return;
+
+    // partition left side
+    quickSort(array, start, index - 1);
+    // partition right side
+    quickSort(array, index + 1, end);
 }
