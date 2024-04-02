@@ -203,8 +203,6 @@ void quickSort(T* array, int start, int end) {
 
     int index{partition(array, start, end)};
 
-    if (index == -1) return;
-
     // partition left side
     quickSort(array, start, index - 1);
     // partition right side
