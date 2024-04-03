@@ -4,14 +4,37 @@
 // Name: Andres Hung
 
 // Hangman Class Implementation
+// in CLION, CMakeLists.txt as the project file
+// in QT CREATOR, use ahpset1-hangman.pro as the project file
 
 #include "Hangman.h"
 
 Hangman::Hangman(std::string filename, std::string username) : player(username) {
-    // loadWordList(filename);
+    // construct pathname to word list for debug configurations
+    std::string path{".."};
 
-    // NOTE: program set specifications have setDifficultyLevel run both in selectGameLevel AND here...
-    player.setDifficultyLevel(selectGameLevel());
+    // CLION relative path to wordList.txt: ../wordList.txt
+    #if defined(__CLION_IDE__) // defined in CMakeLists.txt
+        #if defined(_WIN32) || defined(_WIN64)
+            path += '\';
+        #else
+            path +='/';
+        #endif
+    // QT CREATOR relative path  to wordList.txt ../ahpset1-hangman/wordList.txt
+    #elif defined(__QT_CREATOR__) // defined in ahpset1-hangman.pro
+        #if defined(_WIN32) || defined(_WIN64)
+            path += "\ahpset1-hangman\";
+        #else
+            path += "/ahpset1-hangman/";
+        #endif
+    #endif
+
+    // append wordList.txt
+    path += filename;
+
+    loadWordList(path);
+
+    player.setDifficultyLevel(selectGameLevel()); // set difficultyLevel in Hangman's Player object
 }
 
 void Hangman::loadWordList(std::string fileName) {
@@ -67,7 +90,54 @@ int Hangman::selectGameLevel() {
 
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // remove extra input
 
-        player.setDifficultyLevel(difficultyNumber); // redundant in constructor, can be commented out
+        setDifficultyLevel(difficultyNumber); // set difficultyLevel in Hangman object
         return difficultyNumber;
     }
+}
+
+int Hangman::generateRandomNumber() {
+    // use the Mersenne Twister PRNG using random devices and system clock for seeding
+    // https://www.learncpp.com/cpp-tutorial/generating-random-numbers-using-mersenne-twister/
+    static std::random_device rd{};
+    static std::seed_seq ss{static_cast<std::seed_seq::result_type>(std::chrono::steady_clock::now().time_since_epoch().count()),
+                     rd(), rd(), rd(), rd(), rd(), rd(), rd()};
+    static std::mt19937 mt{ss};
+
+    // word list difficulty thresholds
+    const unsigned easyThreshold{63};
+    const unsigned mediumThreshold{351};
+    const unsigned hardThreshold{485};
+
+    // create number generator based on difficulty level
+    unsigned level{getDifficultyLevel()};
+
+    int min{};
+    int max{};
+
+    if (level == 1) {
+        min = 0;
+        max = easyThreshold;
+    } else if (level == 2) {
+        min = easyThreshold + 1; // 64
+        max = mediumThreshold;
+    } else if (level == 3) {
+        min = mediumThreshold + 1; // 352
+        max = hardThreshold;
+    }
+
+    std::uniform_int_distribution<int> numberGenerator{min, max};
+
+    return numberGenerator(mt);
+}
+
+std::string Hangman::selectRandomWord(int random_number) {
+    return wordVector[random_number];
+}
+
+void Hangman::setDifficultyLevel(unsigned int diffLevel) {
+    difficultyLevel = (diffLevel >= 1 && diffLevel <= 3) ? diffLevel : 1;
+}
+
+unsigned Hangman::getDifficultyLevel() {
+    return difficultyLevel;
 }

@@ -3,6 +3,8 @@ project(ahpset1_hangman)
 
 set(CMAKE_CXX_STANDARD 11)
 
+add_definitions(-D__CLION_IDE__)
+
 add_executable(ahpset1_hangman main.cpp
         Player.cpp
         Player.h

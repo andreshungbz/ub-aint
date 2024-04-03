@@ -10,9 +10,11 @@
 
 
 #include "Player.h"
+#include <chrono>
 #include <cstdlib>
 #include <fstream>
 #include <limits>
+#include <random>
 #include <vector>
 
 class Hangman {

@@ -5,7 +5,6 @@
 
 // main.cpp
 
-#include <iomanip>
 #include <iostream>
 #include "Hangman.h"
 
@@ -29,7 +28,11 @@ int main() {
 
     std::cout << test.generateStatistics() << '\n';
 
-    Hangman test2{"words", "packetroo"};
+    Hangman test2{"wordList.txt", "packetroo"};
+
+    int randomNumber{test2.generateRandomNumber()};
+    std::cout << "Hangman random number: " << randomNumber << '\n';
+    std::cout << "Word from random number: " << test2.selectRandomWord(randomNumber) << '\n';
 
     return 0;
 }
