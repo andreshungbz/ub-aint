@@ -5,4 +5,6 @@ set(CMAKE_CXX_STANDARD 11)
 
 add_executable(ahpset1_hangman main.cpp
         Player.cpp
-        Player.h)
+        Player.h
+        Hangman.cpp
+        Hangman.h)
