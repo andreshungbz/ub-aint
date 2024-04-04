@@ -33,29 +33,9 @@ Hangman::Hangman(std::string filename, std::string username) : player(username) 
     path += filename;
 
     loadWordList(path);
+    resetAvailableLetters();
 
     player.setDifficultyLevel(selectGameLevel()); // set difficultyLevel in Hangman's Player object
-}
-
-void Hangman::loadWordList(std::string fileName) {
-    std::string word;
-
-    std::ifstream infile; // creates a file inputstream object used to connect to a text file
-    infile.open (fileName); // use the inputstream object to open file
-
-    if (infile.is_open()) { // check if the file was successfully opened
-        while(!infile.eof()) { // while not at the end of file eof()
-            getline(infile, word); // read a line from the file and store it in the string variable, word
-            wordVector.push_back(word); // insert string word into the vector
-        } // repeat until the end of file is reached
-
-        infile.close(); // close the file once it has been processed
-    } else { // if you are here, it is because there was a problem opening the file
-        std::cout << "Unable to open file, " << fileName << std::endl; // notify the user that a problem has occurred
-        std::cout << "Hangman game will now terminate." << std::endl;
-
-        exit(-1); // terminate the program since no words could be loaded, making the game impossible
-    }
 }
 
 int Hangman::selectGameLevel() {
@@ -132,6 +112,33 @@ int Hangman::generateRandomNumber() {
 
 std::string Hangman::selectRandomWord(int random_number) {
     return wordVector[random_number];
+}
+
+void Hangman::loadWordList(std::string fileName) {
+    std::string word;
+
+    std::ifstream infile; // creates a file inputstream object used to connect to a text file
+    infile.open (fileName); // use the inputstream object to open file
+
+    if (infile.is_open()) { // check if the file was successfully opened
+        while(!infile.eof()) { // while not at the end of file eof()
+            getline(infile, word); // read a line from the file and store it in the string variable, word
+            wordVector.push_back(word); // insert string word into the vector
+        } // repeat until the end of file is reached
+
+        infile.close(); // close the file once it has been processed
+    } else { // if you are here, it is because there was a problem opening the file
+        std::cout << "Unable to open file, " << fileName << std::endl; // notify the user that a problem has occurred
+        std::cout << "Hangman game will now terminate." << std::endl;
+
+        exit(-1); // terminate the program since no words could be loaded, making the game impossible
+    }
+}
+
+void Hangman::resetAvailableLetters() {
+    for (int i{0}; i < Hangman::ALPHABET_SIZE; ++i) {
+        alphabetArray[i] = static_cast<char>('A' + i);
+    }
 }
 
 void Hangman::setDifficultyLevel(unsigned int diffLevel) {

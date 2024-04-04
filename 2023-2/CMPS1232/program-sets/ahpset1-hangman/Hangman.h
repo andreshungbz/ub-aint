@@ -64,7 +64,7 @@ private:
     std::vector<std::string> wordVector;
     unsigned difficultyLevel;
     unsigned maxAllowedAttempts;
-    char alphabetArray[ALPHABET_SIZE + 1];
+    char alphabetArray[ALPHABET_SIZE + 1]; // TODO: might have remove the +1?
     constexpr static char G[ASCII_ROWS][ASCII_COLS] = {" ##### ", // Row=0
                                                        " #     ", // Row=1
                                                        " #     ", // Row=2
