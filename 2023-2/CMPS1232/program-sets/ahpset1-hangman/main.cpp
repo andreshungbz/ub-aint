@@ -11,6 +11,7 @@
 // then building will work. Afterward, remove the edit and the build should succeed.
 
 // NOTE: the folder that holds all the source files and the wordlist.txt must be named ahpset1-hangman
+// test
 
 #include <iostream>
 #include "Hangman.h"
