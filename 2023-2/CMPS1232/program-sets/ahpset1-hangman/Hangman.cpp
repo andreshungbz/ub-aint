@@ -13,14 +13,14 @@ Hangman::Hangman(std::string filename, std::string username) : player(username) 
     // construct pathname to word list for debug configurations
     std::string path{".."};
 
-    // CLION relative path to wordlist.txt: ../wordlist.txt
+    // CLION relative path to wordlists.txt: ../wordlists.txt
     #if defined(__CLION_IDE__) // defined in CMakeLists.txt
         #if defined(_WIN32) || defined(_WIN64)
             path += '\\';
         #else
             path +='/';
         #endif
-    // QT CREATOR relative path  to wordlist.txt ../ahpset1-hangman/wordlist.txt
+    // QT CREATOR relative path  to wordlists.txt ../ahpset1-hangman/wordlists.txt
     #elif defined(__QT_CREATOR__) // defined in ahpset1-hangman.pro
         #if defined(_WIN32) || defined(_WIN64)
             path += "\\ahpset1-hangman\\";
