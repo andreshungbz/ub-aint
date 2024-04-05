@@ -135,6 +135,75 @@ void Hangman::loadWordList(std::string fileName) {
     }
 }
 
+void Hangman::printMessage(std::string message, bool printTop, bool printBottom) {
+    const std::size_t dashesCount{33};
+
+    // prints the top of the box
+    if (printTop) {
+        std::cout << '+';
+        for (std::size_t i{0}; i < dashesCount; ++i) {
+            std::cout << '-';
+        }
+        std::cout << '+';
+
+        std::cout << '\n';
+    }
+
+    std::cout << '|';
+
+    std::size_t messageLength{message.size()};
+    std::size_t difference{dashesCount - messageLength};
+    bool leftPosition{true};
+
+    while (difference--) {
+        if (leftPosition) {
+            // using string methods insert and begin to append the space at the beginning
+            // https://en.cppreference.com/w/cpp/string/basic_string/insert
+            message.insert(message.begin(), ' ');
+        } else {
+            message += ' ';
+        }
+
+        leftPosition = !leftPosition;
+    }
+
+    std::cout << message;
+
+    std::cout << '|';
+
+    // prints the bottom of the box
+    if (printBottom) {
+        std::cout << '\n';
+
+        std::cout << '+';
+        for (std::size_t i{0}; i < dashesCount; ++i) {
+            std::cout << '-';
+        }
+        std::cout << '+';
+    }
+}
+
+void Hangman::drawHangman(int guessCount) {
+    const std::size_t height{6};
+    int guessCounter{0};
+
+    for (std::size_t i{0}; i < height; ++i) {
+        switch (guessCount) {
+            case 0:
+                printMessage("", false, false);
+                break;
+            case 1:
+            case 2:
+                printMessage("|", false, false);
+                --guessCount;
+            case 3:
+                printMessage("O", false, false);
+                --guessCount;
+
+        }
+    }
+}
+
 void Hangman::resetAvailableLetters() {
     for (int i{0}; i < Hangman::ALPHABET_SIZE; ++i) {
         alphabetArray[i] = static_cast<char>('A' + i);

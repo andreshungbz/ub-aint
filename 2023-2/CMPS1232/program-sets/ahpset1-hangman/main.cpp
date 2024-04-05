@@ -41,5 +41,7 @@ int main() {
     std::cout << "Hangman random number: " << randomNumber << '\n';
     std::cout << "Word from random number: " << test2.selectRandomWord(randomNumber) << '\n';
 
+    test2.printMessage("");
+
     return 0;
 }
