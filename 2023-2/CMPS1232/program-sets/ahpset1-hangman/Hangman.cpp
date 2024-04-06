@@ -9,6 +9,24 @@
 
 #include "Hangman.h"
 
+// defining static data members in Hangman.cpp helps to avoid the One Definition Rule
+// as it keeps it the single source of definition here.
+// https://www.learncpp.com/cpp-tutorial/static-member-variables/
+constexpr char Hangman::G[Hangman::ASCII_ROWS][Hangman::ASCII_COLS];
+constexpr char Hangman::A[Hangman::ASCII_ROWS][Hangman::ASCII_COLS];
+constexpr char Hangman::M[Hangman::ASCII_ROWS][Hangman::ASCII_COLS];
+constexpr char Hangman::E[Hangman::ASCII_ROWS][Hangman::ASCII_COLS];
+constexpr char Hangman::O[Hangman::ASCII_ROWS][Hangman::ASCII_COLS];
+constexpr char Hangman::V[Hangman::ASCII_ROWS][Hangman::ASCII_COLS];
+constexpr char Hangman::R[Hangman::ASCII_ROWS][Hangman::ASCII_COLS];
+constexpr char Hangman::Y[Hangman::ASCII_ROWS][Hangman::ASCII_COLS];
+constexpr char Hangman::U[Hangman::ASCII_ROWS][Hangman::ASCII_COLS];
+constexpr char Hangman::W[Hangman::ASCII_ROWS][Hangman::ASCII_COLS];
+constexpr char Hangman::N[Hangman::ASCII_ROWS][Hangman::ASCII_COLS];
+constexpr char Hangman::exclamation[Hangman::ASCII_ROWS][Hangman::ASCII_COLS];
+constexpr char Hangman::space[Hangman::ASCII_ROWS][Hangman::ASCII_COLS];
+
+
 Hangman::Hangman(std::string filename, std::string username) : player(username) {
     // construct pathname to word list for debug configurations
     std::string path{".."};
@@ -79,9 +97,11 @@ int Hangman::generateRandomNumber() {
     // use the Mersenne Twister PRNG using random devices and system clock for seeding
     // https://www.learncpp.com/cpp-tutorial/generating-random-numbers-using-mersenne-twister/
     static std::random_device rd{};
-    static std::seed_seq ss{static_cast<std::seed_seq::result_type>(std::chrono::steady_clock::now().time_since_epoch().count()),
+
+    // non-static means the seed sequence is reseeded on every call with different time
+    std::seed_seq ss{static_cast<std::seed_seq::result_type>(std::chrono::steady_clock::now().time_since_epoch().count()),
                      rd(), rd(), rd(), rd(), rd(), rd(), rd()};
-    static std::mt19937 mt{ss};
+    std::mt19937 mt{ss};
 
     // word list difficulty thresholds
     const unsigned easyThreshold{63};
@@ -108,6 +128,10 @@ int Hangman::generateRandomNumber() {
     std::uniform_int_distribution<int> numberGenerator{min, max};
 
     return numberGenerator(mt);
+
+    // alternative using std::rand
+    // ensure between min max range inclusive
+    // return min + std::rand() / ((RAND_MAX + 1u) / (max - min + 1));
 }
 
 std::string Hangman::selectRandomWord(int random_number) {
@@ -133,6 +157,90 @@ void Hangman::loadWordList(std::string fileName) {
 
         exit(-1); // terminate the program since no words could be loaded, making the game impossible
     }
+}
+
+void Hangman::startGame() {
+    std::string guessedSoFar; // letters player has guessed so far
+    std::string wordToGuess; // random word chosen to guess
+    int totalGuesses{0}; // number of guesses so far
+    bool hasWon{false}; // whether the player has won the game
+    bool playAgain{true}; // whether the player wants to play again
+    char guess{}; // current guessed letter
+
+    // NOTE: in place of using std::srand, the Hangmann::generateRandomNumber member function
+    // has its seed sequence reseeded on every call with the updated time, even though technically
+    // not necessary if made static. The same effect is achieved of randomness per number generated.
+    // below is the statement for seeding std::srand for use with std::rand.
+
+    // std::srand(static_cast<unsigned int>(std::time(nullptr)));
+
+    do {
+        guessedSoFar = "";
+        wordToGuess = "";
+        totalGuesses = 0;
+
+        int randomNumber{generateRandomNumber()};
+        wordToGuess = selectRandomWord(randomNumber);
+
+        resetAvailableLetters();
+
+        do {
+            // use a preprocessor directive to clear screen for both Windows and macOS/Linux systems
+            // https://www.learncpp.com/cpp-tutorial/introduction-to-the-preprocessor/
+            // https://learn.microsoft.com/en-us/cpp/preprocessor/predefined-macros?view=msvc-170
+            #if defined(_WIN32) || defined(_WIN64)
+                std::system("cls"); // for Windows
+            #else
+                std::system("clear"); // for macOS/Linux
+            #endif
+
+            printMessage("HANGMAN", true, true);
+            drawHangman(totalGuesses);
+            printAvailableLetters(guessedSoFar);
+            printMessage("Guess the word", true, true);
+            hasWon = checkWin(wordToGuess, guessedSoFar);
+
+            if (hasWon) {
+                break;
+            }
+
+            std::cout << "\nEnter guess: ";
+            std::cin >> guess;
+
+            // account for failed extraction
+            // e.g. if a character is inputted
+            // https://www.learncpp.com/cpp-tutorial/stdcin-and-handling-invalid-input/
+            if (!std::cin) {
+                std::cin.clear(); // return to normal mode
+                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
+                continue;
+            }
+
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // remove extra input
+
+            // convert guess letter to uppercase
+            guess = static_cast<char>(std::toupper(guess));
+
+            // if guess letter is unique, append it to guessedSoFar
+            if (guessedSoFar.find(guess) == std::string::npos) {
+                guessedSoFar += guess;
+            }
+
+            // update totalGuesses
+            totalGuesses = static_cast<int>(attemptsMadeSoFar(wordToGuess, guessedSoFar));
+        } while (totalGuesses < static_cast<int>(getMaxAllowedAttempts()));
+
+        playAgain = processResults(wordToGuess, totalGuesses, hasWon);
+    } while (playAgain);
+
+    #if defined(_WIN32) || defined(_WIN64)
+        std::system("pause") // for Windows
+    #else
+        std::cin.get(); // for macOS/Linux
+    #endif
+
+    std::getchar();
 }
 
 void Hangman::printMessage(std::string message, bool printTop, bool printBottom) {
@@ -186,11 +294,23 @@ void Hangman::printMessage(std::string message, bool printTop, bool printBottom)
 }
 
 void Hangman::drawHangman(int guessCount) {
-    const std::size_t height{6};
+    const int normal{10};
+    const std::size_t normalHeight{6};
+    const std::size_t difference{getMaxAllowedAttempts() - normal};
+
+    for (std::size_t i{0}; i < difference; ++i) {
+        if (guessCount == 0) {
+            printMessage("", false, false);
+        } else {
+            printMessage("|", false, false);
+            --guessCount;
+        }
+    }
+
     int drawCounter{1};
 
     // a selective loop that draws the hangman according to guessCount
-    for (std::size_t i{0}; i < height; ++i) {
+    for (std::size_t i{0}; i < normalHeight; ++i) {
         if (drawCounter <= guessCount) {
             if (drawCounter == 1 || drawCounter == 2) {
                 printMessage("|", false, false);
@@ -257,13 +377,65 @@ void Hangman::drawHangman(int guessCount) {
 }
 
 void Hangman::resetAvailableLetters() {
-    for (int i{0}; i < Hangman::ALPHABET_SIZE; ++i) {
+    for (int i{0}; i < ALPHABET_SIZE; ++i) {
         alphabetArray[i] = static_cast<char>('A' + i);
     }
 }
 
 void Hangman::printAsciiMessage(std::string message) {
+    std::cout << '\n';
 
+    for (int i{0}; i < ASCII_ROWS; ++i) {
+        for (char c : message) {
+            switch (c) {
+                case 'G':
+                    std::cout << G[i];
+                    break;
+                case 'A':
+                    std::cout << A[i];
+                    break;
+                case 'M':
+                    std::cout << M[i];
+                    break;
+                case 'E':
+                    std::cout << E[i];
+                    break;
+                case 'O':
+                    std::cout << O[i];
+                    break;
+                case 'V':
+                    std::cout << V[i];
+                    break;
+                case 'R':
+                    std::cout << R[i];
+                    break;
+                case 'Y':
+                    std::cout << Y[i];
+                    break;
+                case 'U':
+                    std::cout << U[i];
+                    break;
+                case 'W':
+                    std::cout << W[i];
+                    break;
+                case 'N':
+                    std::cout << N[i];
+                    break;
+                case '!':
+                    std::cout << exclamation[i];
+                    break;
+                case ' ':
+                    std::cout << space[i];
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        std::cout << '\n';
+    }
+
+    std::cout << '\n';
 }
 
 void Hangman::printAvailableLetters(std::string taken) {
@@ -272,7 +444,7 @@ void Hangman::printAvailableLetters(std::string taken) {
     std::size_t takenLength{taken.length()};
 
     for (std::size_t i{0}; i < takenLength; ++i) {
-        for (int j{0}; j < Hangman::ALPHABET_SIZE; ++j) {
+        for (int j{0}; j < ALPHABET_SIZE; ++j) {
             // use std::toupper from <cctype> for extra validation
             // https://en.cppreference.com/w/cpp/string/byte/toupper
             if (static_cast<char>(std::toupper(taken[i])) == alphabetArray[j]) {
@@ -284,7 +456,7 @@ void Hangman::printAvailableLetters(std::string taken) {
 
     // construct string from available letters from alphabetArray
     std::string availableLetters{};
-    for (int i{0}; i < Hangman::ALPHABET_SIZE; ++i) {
+    for (int i{0}; i < ALPHABET_SIZE; ++i) {
         availableLetters += alphabetArray[i];
     }
 
@@ -324,7 +496,7 @@ bool Hangman::checkWin(std::string wordToGuess, std::string guessesSoFar) {
         }
     }
 
-    printMessage(wordField, true, false);
+    printMessage(wordField, true, true);
 
     // if the count of lettersGuessed is equal to the word length, then all letters have been guessed
     // and player has won
@@ -343,7 +515,7 @@ bool Hangman::processResults(std::string wordToGuess, int guessAttempts, bool ha
 
     while (true) {
         std::cout << "Would you like to play again? [Y] [N]: ";
-        int response{};
+        char response{};
         std::cin >> response;
 
         // account for failed extraction

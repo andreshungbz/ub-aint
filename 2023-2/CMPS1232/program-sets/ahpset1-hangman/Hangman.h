@@ -13,8 +13,10 @@
 #include <cctype>
 #include <chrono>
 #include <cstdlib>
+// #include <ctime>
 #include <fstream>
 #include <limits>
+#include <stdio.h>
 #include <random>
 #include <vector>
 
@@ -66,13 +68,111 @@ private:
     unsigned difficultyLevel;
     unsigned maxAllowedAttempts;
     char alphabetArray[ALPHABET_SIZE]; // NOTE: removed original + 1 as it is not needed
-    constexpr static char G[ASCII_ROWS][ASCII_COLS] = {" ##### ", // Row=0
-                                                       " #     ", // Row=1
-                                                       " #     ", // Row=2
-                                                       " # ### ", // Row=3
-                                                       " #   # ", // Row=4
-                                                       " #   # ", // Row=5
-                                                       " ##### "}; // Row=6
+
+    // ASCII letter definitions are located in Hangman.cpp
+    constexpr static char G[ASCII_ROWS][ASCII_COLS] {" ##### ", // Row=0
+                                                     " #     ", // Row=1
+                                                     " #     ", // Row=2
+                                                     " # ### ", // Row=3
+                                                     " #   # ", // Row=4
+                                                     " #   # ", // Row=5
+                                                     " ##### "}; // Row=6
+
+    constexpr static char A[ASCII_ROWS][ASCII_COLS] {" ##### ",
+                                                     " #   # ",
+                                                     " #   # ",
+                                                     " ##### ",
+                                                     " #   # ",
+                                                     " #   # ",
+                                                     " #   # "};
+
+    constexpr static char M[ASCII_ROWS][ASCII_COLS] {" #   # ",
+                                                     " ## ## ",
+                                                     " # # # ",
+                                                     " #   # ",
+                                                     " #   # ",
+                                                     " #   # ",
+                                                     " #   # "};
+
+    constexpr static char E[ASCII_ROWS][ASCII_COLS] {" ##### ",
+                                                     " #     ",
+                                                     " #     ",
+                                                     " ##### ",
+                                                     " #     ",
+                                                     " #     ",
+                                                     " ##### "};
+
+    constexpr static char O[ASCII_ROWS][ASCII_COLS] {" ##### ",
+                                                     " #   # ",
+                                                     " #   # ",
+                                                     " #   # ",
+                                                     " #   # ",
+                                                     " #   # ",
+                                                     " ##### "};
+
+    constexpr static char V[ASCII_ROWS][ASCII_COLS] {" #   # ",
+                                                     " #   # ",
+                                                     " #   # ",
+                                                     " #   # ",
+                                                     " #   # ",
+                                                     "  # #  ",
+                                                     "   #   "};
+
+    constexpr static char R[ASCII_ROWS][ASCII_COLS] {" ##### ",
+                                                     " #   # ",
+                                                     " #   # ",
+                                                     " ##### ",
+                                                     " # #   ",
+                                                     " #  #  ",
+                                                     " #   # "};
+
+    constexpr static char Y[ASCII_ROWS][ASCII_COLS] {" #   # ",
+                                                     "  # #  ",
+                                                     "   #   ",
+                                                     "   #   ",
+                                                     "   #   ",
+                                                     "   #   ",
+                                                     "   #   "};
+
+    constexpr static char U[ASCII_ROWS][ASCII_COLS] {" #   # ",
+                                                     " #   # ",
+                                                     " #   # ",
+                                                     " #   # ",
+                                                     " #   # ",
+                                                     " #   # ",
+                                                     " ##### "};
+
+    constexpr static char W[ASCII_ROWS][ASCII_COLS] {" #   # ",
+                                                     " #   # ",
+                                                     " #   # ",
+                                                     " #   # ",
+                                                     " # # # ",
+                                                     " ## ## ",
+                                                     " #   # "};
+
+    constexpr static char N[ASCII_ROWS][ASCII_COLS] {" #   # ",
+                                                     " ##  # ",
+                                                     " # # # ",
+                                                     " #  ## ",
+                                                     " #   # ",
+                                                     " #   # ",
+                                                     " #   # "};
+
+    constexpr static char exclamation[ASCII_ROWS][ASCII_COLS] {"   #   ",
+                                                               "   #   ",
+                                                               "   #   ",
+                                                               "   #   ",
+                                                               "       ",
+                                                               "   #   ",
+                                                               "   #   "};
+
+    constexpr static char space[ASCII_ROWS][ASCII_COLS] {"       ",
+                                                         "       ",
+                                                         "       ",
+                                                         "       ",
+                                                         "       ",
+                                                         "       ",
+                                                         "       "};
 };
 
 
