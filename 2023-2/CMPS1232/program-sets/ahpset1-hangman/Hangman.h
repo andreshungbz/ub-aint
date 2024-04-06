@@ -10,6 +10,7 @@
 
 
 #include "Player.h"
+#include <cctype>
 #include <chrono>
 #include <cstdlib>
 #include <fstream>
@@ -75,4 +76,4 @@ private:
 };
 
 
-#endif //AHPSET1_HANGMAN_HANGMAN_H
+#endif // AHPSET1_HANGMAN_HANGMAN_H

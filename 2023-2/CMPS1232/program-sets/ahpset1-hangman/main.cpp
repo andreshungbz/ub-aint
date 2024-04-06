@@ -39,9 +39,26 @@ int main() {
 
     int randomNumber{test2.generateRandomNumber()};
     std::cout << "Hangman random number: " << randomNumber << '\n';
-    std::cout << "Word from random number: " << test2.selectRandomWord(randomNumber) << '\n';
 
-    test2.printMessage("");
+    std::string word{test2.selectRandomWord(randomNumber)};
+    std::cout << "Word from random number: " << word << '\n';
+
+    std::cout << "maxAllowedAttempts: " << test2.getMaxAllowedAttempts() << '\n';
+
+    for (int i{0}; i <= 9; ++i) {
+        test2.printMessage("HANGMAN");
+        test2.drawHangman(i);
+        test2.printMessage("Available letters", true, false);
+    }
+
+    std::cout << "wordToGuess: " << word << '\n';
+    std::string guesses{"AEIOU"};
+    std::cout << "guessesSoFar: " << guesses << '\n';
+    std::cout << "attemptsMadeSoFar result: " << test2.attemptsMadeSoFar(word, guesses) << '\n';
+
+    test2.printAvailableLetters("AEIOU");
+
+    std::cout << test2.checkWin(word, "AEIOU") << '\n';
 
     return 0;
 }

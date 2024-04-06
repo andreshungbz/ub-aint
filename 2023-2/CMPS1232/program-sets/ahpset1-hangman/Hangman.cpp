@@ -181,25 +181,77 @@ void Hangman::printMessage(std::string message, bool printTop, bool printBottom)
         }
         std::cout << '+';
     }
+
+    std::cout << '\n';
 }
 
 void Hangman::drawHangman(int guessCount) {
     const std::size_t height{6};
-    int guessCounter{0};
+    int drawCounter{1};
 
+    // a selective loop that draws the hangman according to guessCount
     for (std::size_t i{0}; i < height; ++i) {
-        switch (guessCount) {
-            case 0:
-                printMessage("", false, false);
-                break;
-            case 1:
-            case 2:
+        if (drawCounter <= guessCount) {
+            if (drawCounter == 1 || drawCounter == 2) {
                 printMessage("|", false, false);
-                --guessCount;
-            case 3:
-                printMessage("O", false, false);
-                --guessCount;
+                ++drawCounter;
+                continue;
+            }
 
+            if (drawCounter == 3) {
+                printMessage("O", false, false);
+
+                // increment depends on guessCount
+                if (guessCount == 3 || guessCount == 4) {
+                    ++drawCounter;
+                } else if (guessCount == 5) {
+                    drawCounter += 2;
+                } else if (guessCount > 5) {
+                    drawCounter += 3;
+                }
+
+                continue;
+            }
+
+            if (drawCounter == 4 || drawCounter == 8) {
+                printMessage("/  ", false, false);
+                ++drawCounter;
+                continue;
+            }
+
+            if (drawCounter == 5) {
+                printMessage("/| ", false, false);
+                ++drawCounter;
+                continue;
+            }
+
+            if (drawCounter == 6) {
+                printMessage("/|\\", false, false);
+                ++drawCounter;
+                continue;
+            }
+
+            if (drawCounter == 7) {
+                printMessage("|", false, false);
+
+                // increment depends on guessCount
+                if (guessCount == 7 || guessCount == 8) {
+                    ++drawCounter;
+                } else if (guessCount == 9) {
+                    drawCounter += 2;
+                }
+
+                continue;
+            }
+
+            if (drawCounter == 9) {
+                printMessage("/ \\", false, false);
+                ++drawCounter;
+                continue;
+            }
+        } else {
+            // print the rest as empty space
+            printMessage("", false, false);
         }
     }
 }
@@ -210,10 +262,146 @@ void Hangman::resetAvailableLetters() {
     }
 }
 
+void Hangman::printAsciiMessage(std::string message) {
+
+}
+
+void Hangman::printAvailableLetters(std::string taken) {
+    printMessage("Available Letters", true, false);
+
+    std::size_t takenLength{taken.length()};
+
+    for (std::size_t i{0}; i < takenLength; ++i) {
+        for (int j{0}; j < Hangman::ALPHABET_SIZE; ++j) {
+            // use std::toupper from <cctype> for extra validation
+            // https://en.cppreference.com/w/cpp/string/byte/toupper
+            if (static_cast<char>(std::toupper(taken[i])) == alphabetArray[j]) {
+                alphabetArray[j] = ' ';
+                break;
+            }
+        }
+    }
+
+    // construct string from available letters from alphabetArray
+    std::string availableLetters{};
+    for (int i{0}; i < Hangman::ALPHABET_SIZE; ++i) {
+        availableLetters += alphabetArray[i];
+    }
+
+    printMessage(availableLetters, true, false);
+}
+
+bool Hangman::checkWin(std::string wordToGuess, std::string guessesSoFar) {
+    std::size_t wordToGuessLength{wordToGuess.length()};
+
+    // convert wordToGuess to uppercase
+    for (std::size_t i{0}; i < wordToGuessLength; ++i) {
+        wordToGuess[i] = static_cast<char>(std::toupper(wordToGuess[i]));
+    }
+
+    // convert guessesSoFar to uppercase just in case
+    for (std::size_t i{0}; i < guessesSoFar.length(); ++i) {
+        guessesSoFar[i] = static_cast<char>(std::toupper(guessesSoFar[i]));
+    }
+
+    std::string wordField{};
+    std::size_t lettersGuessed{0};
+
+    // first variable is used to not append a leading space
+    bool first{true};
+    for (std::size_t i{0}; i < wordToGuessLength; ++i) {
+        if (first) {
+            first = false;
+        } else {
+            wordField += ' ';
+        }
+
+        if (guessesSoFar.find(wordToGuess[i]) != std::string::npos) {
+            wordField += wordToGuess[i];
+            ++lettersGuessed;
+        } else {
+            wordField += '_';
+        }
+    }
+
+    printMessage(wordField, true, false);
+
+    // if the count of lettersGuessed is equal to the word length, then all letters have been guessed
+    // and player has won
+    return wordToGuessLength == lettersGuessed;
+}
+
+bool Hangman::processResults(std::string wordToGuess, int guessAttempts, bool hasWon) {
+    player.setGuesses(guessAttempts);
+    player.generateStatistics();
+
+    if (hasWon) {
+        printAsciiMessage("YOU WON!");
+    } else {
+        printAsciiMessage("GAME OVER!");
+    }
+
+    while (true) {
+        std::cout << "Would you like to play again? [Y] [N]: ";
+        int response{};
+        std::cin >> response;
+
+        // account for failed extraction
+        // https://www.learncpp.com/cpp-tutorial/stdcin-and-handling-invalid-input/
+        if (!std::cin) {
+            std::cin.clear(); // return to normal mode
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
+            continue;
+        }
+
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // remove extra input
+
+        if (response == 'Y' || response == 'y') {
+            player.setDifficultyLevel(selectGameLevel());
+
+            return true;
+        } else {
+            return false;
+        }
+    }
+}
+
 void Hangman::setDifficultyLevel(unsigned int diffLevel) {
     difficultyLevel = (diffLevel >= 1 && diffLevel <= 3) ? diffLevel : 1;
+
+    if (difficultyLevel == 1 || difficultyLevel == 3) {
+        setMaxAllowedAttempts(10);
+    } else {
+        // if difficulty level is 2
+        setMaxAllowedAttempts(13);
+    }
 }
 
 unsigned Hangman::getDifficultyLevel() {
     return difficultyLevel;
+}
+
+void Hangman::setMaxAllowedAttempts(unsigned int allowedAttempts) {
+    maxAllowedAttempts = allowedAttempts;
+}
+
+unsigned Hangman::getMaxAllowedAttempts() {
+    return maxAllowedAttempts;
+}
+
+unsigned Hangman::attemptsMadeSoFar(std::string wordToGuess, std::string guessesSoFar) {
+    std::size_t guessesLength{guessesSoFar.length()};
+    unsigned notInWordCounter{0};
+
+    for (std::size_t i{0}; i < guessesLength; ++i) {
+        // use std::string find member function and std::tolower function from <cctype> to compare characters
+        // https://en.cppreference.com/w/cpp/string/byte/tolower
+        // https://en.cppreference.com/w/cpp/string/basic_string/find
+        if (wordToGuess.find(static_cast<char>(std::tolower(guessesSoFar[i]))) == std::string::npos) {
+            ++notInWordCounter;
+        }
+    }
+
+    return notInWordCounter;
 }
