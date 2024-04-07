@@ -63,7 +63,7 @@ int Hangman::selectGameLevel() {
             std::system("clear"); // for Unix/Linux
         #endif
 
-        std::cout << "[CMPS1232] HANGMAN GAME by Andres Hung for Program Set 1 (last updated 2024-04-06)\n";
+        std::cout << "[CMPS1232] HANGMAN GAME by Andres Hung for Program Set 1\n";
 
         std::cout << "Choose a difficulty level number [1 = Easy] [2 = Medium] [3 = Hard]: ";
         int difficultyNumber{};
@@ -250,7 +250,7 @@ void Hangman::startGame() {
         std::system("clear"); // for Unix/Linux
     #endif
 
-    std::cout << "[CMPS1232] HANGMAN GAME by Andres Hung for Program Set 1 (last updated 2024-04-06)\n";
+    std::cout << "[CMPS1232] HANGMAN GAME by Andres Hung for Program Set 1\n";
     std::cout << "Thank you for playing! Press any key to exit.";
 
     #if defined(_WIN32)

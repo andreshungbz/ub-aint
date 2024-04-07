@@ -31,7 +31,7 @@ int main() {
         std::system("clear"); // for Unix/Linux
     #endif
 
-    std::cout << "[CMPS1232] HANGMAN GAME by Andres Hung for Program Set 1 (last updated 2024-04-06)\n";
+    std::cout << "[CMPS1232] HANGMAN GAME by Andres Hung for Program Set 1\n";
 
     std::cout << "Enter a username (19 character max): ";
     std::string username{};
