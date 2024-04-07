@@ -83,7 +83,7 @@ private:
     std::vector<std::string> wordVector; // array of all the possible words in the game
     unsigned difficultyLevel; // determines which range of words to pick from
     unsigned maxAllowedAttempts; // is determined by difficultyLewvel
-    char alphabetArray[ALPHABET_SIZE]; // array of letters available for guessing
+    char alphabetArray[ALPHABET_SIZE + 1]; // array of letters available for guessing
 
     // ASCII letter definitions are located in Hangman.cpp
     constexpr static char G[ASCII_ROWS][ASCII_COLS] {" ##### ", // Row=0

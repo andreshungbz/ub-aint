@@ -392,6 +392,9 @@ void Hangman::resetAvailableLetters() {
     for (int i{0}; i < ALPHABET_SIZE; ++i) {
         alphabetArray[i] = static_cast<char>('A' + i);
     }
+
+    // add a space to the extra location in alphabetArray
+    alphabetArray[ALPHABET_SIZE] = ' ';
 }
 
 void Hangman::printAsciiMessage(const std::string& message) {
