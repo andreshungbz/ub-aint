@@ -4,6 +4,7 @@
 // Name: Andres Hung
 
 // Hangman Class Implementation
+
 // in CLION, use CMakeLists.txt as the project file
 // in QT CREATOR, use ahpset1-hangman.pro as the project file
 
