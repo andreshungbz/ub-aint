@@ -22,13 +22,13 @@
 #include "Hangman.h"
 
 int main() {
-    // use a preprocessor directive to clear screen for both Windows and macOS/Linux systems
+    // use a preprocessor directive to clear screen for both Windows and Unix/Linux systems
     // https://www.learncpp.com/cpp-tutorial/introduction-to-the-preprocessor/
     // https://learn.microsoft.com/en-us/cpp/preprocessor/predefined-macros?view=msvc-170
-    #if defined(_WIN32) || defined(_WIN64)
+    #if defined(_WIN32)
         std::system("cls"); // for Windows
     #else
-        std::system("clear"); // for macOS/Linux
+        std::system("clear"); // for Unix/Linux
     #endif
 
     std::cout << "[CMPS1232] HANGMAN GAME by Andres Hung for Program Set 1 (last updated 2024-04-06)\n";

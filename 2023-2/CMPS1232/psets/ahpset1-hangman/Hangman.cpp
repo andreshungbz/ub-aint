@@ -21,26 +21,26 @@
 // defining static data members in Hangman.cpp helps to avoid the One Definition Rule
 // as it keeps it the single source of definition here.
 // https://www.learncpp.com/cpp-tutorial/static-member-variables/
-constexpr char Hangman::G[Hangman::ASCII_ROWS][Hangman::ASCII_COLS];
-constexpr char Hangman::A[Hangman::ASCII_ROWS][Hangman::ASCII_COLS];
-constexpr char Hangman::M[Hangman::ASCII_ROWS][Hangman::ASCII_COLS];
-constexpr char Hangman::E[Hangman::ASCII_ROWS][Hangman::ASCII_COLS];
-constexpr char Hangman::O[Hangman::ASCII_ROWS][Hangman::ASCII_COLS];
-constexpr char Hangman::V[Hangman::ASCII_ROWS][Hangman::ASCII_COLS];
-constexpr char Hangman::R[Hangman::ASCII_ROWS][Hangman::ASCII_COLS];
-constexpr char Hangman::Y[Hangman::ASCII_ROWS][Hangman::ASCII_COLS];
-constexpr char Hangman::U[Hangman::ASCII_ROWS][Hangman::ASCII_COLS];
-constexpr char Hangman::W[Hangman::ASCII_ROWS][Hangman::ASCII_COLS];
-constexpr char Hangman::N[Hangman::ASCII_ROWS][Hangman::ASCII_COLS];
-constexpr char Hangman::exclamation[Hangman::ASCII_ROWS][Hangman::ASCII_COLS];
-constexpr char Hangman::space[Hangman::ASCII_ROWS][Hangman::ASCII_COLS];
+constexpr char Hangman::G[ASCII_ROWS][ASCII_COLS];
+constexpr char Hangman::A[ASCII_ROWS][ASCII_COLS];
+constexpr char Hangman::M[ASCII_ROWS][ASCII_COLS];
+constexpr char Hangman::E[ASCII_ROWS][ASCII_COLS];
+constexpr char Hangman::O[ASCII_ROWS][ASCII_COLS];
+constexpr char Hangman::V[ASCII_ROWS][ASCII_COLS];
+constexpr char Hangman::R[ASCII_ROWS][ASCII_COLS];
+constexpr char Hangman::Y[ASCII_ROWS][ASCII_COLS];
+constexpr char Hangman::U[ASCII_ROWS][ASCII_COLS];
+constexpr char Hangman::W[ASCII_ROWS][ASCII_COLS];
+constexpr char Hangman::N[ASCII_ROWS][ASCII_COLS];
+constexpr char Hangman::exclamation[ASCII_ROWS][ASCII_COLS];
+constexpr char Hangman::space[ASCII_ROWS][ASCII_COLS];
 
 Hangman::Hangman(const std::string& filename, const std::string& username) : player(username) { // NOLINT(*-pro-type-member-init)
     // construct pathname to word list for debug configurations
     std::string path{".."};
 
-    // create relative path for Windows and macOS/Linux
-    #if defined(_WIN32) || defined(_WIN64)
+    // create relative path for Windows and Unix/Linux
+    #if defined(_WIN32)
         path += '\\';
     #else
         path +='/';
@@ -56,10 +56,10 @@ Hangman::Hangman(const std::string& filename, const std::string& username) : pla
 
 int Hangman::selectGameLevel() {
     while (true) {
-        #if defined(_WIN32) || defined(_WIN64)
+        #if defined(_WIN32)
             std::system("cls"); // for Windows
         #else
-            std::system("clear"); // for macOS/Linux
+            std::system("clear"); // for Unix/Linux
         #endif
 
         std::cout << "[CMPS1232] HANGMAN GAME by Andres Hung for Program Set 1 (last updated 2024-04-06)\n";
@@ -189,10 +189,10 @@ void Hangman::startGame() {
 
         // guess loop
         do {
-            #if defined(_WIN32) || defined(_WIN64)
+            #if defined(_WIN32)
                 std::system("cls"); // for Windows
             #else
-                std::system("clear"); // for macOS/Linux
+                std::system("clear"); // for Unix/Linux
             #endif
 
             printMessage("HANGMAN", true, true);
@@ -243,16 +243,16 @@ void Hangman::startGame() {
         playAgain = processResults(wordToGuess, totalGuesses, hasWon);
     } while (playAgain);
 
-    #if defined(_WIN32) || defined(_WIN64)
+    #if defined(_WIN32)
         std::system("cls"); // for Windows
     #else
-        std::system("clear"); // for macOS/Linux
+        std::system("clear"); // for Unix/Linux
     #endif
 
     std::cout << "[CMPS1232] HANGMAN GAME by Andres Hung for Program Set 1 (last updated 2024-04-06)\n";
     std::cout << "Thank you for playing! Press any key to exit.";
 
-    #if defined(_WIN32) || defined(_WIN64)
+    #if defined(_WIN32)
         std::system("pause") // for Windows
     #endif
 

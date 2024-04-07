@@ -68,7 +68,7 @@ std::string Player::generateStatistics() {
     double total{0};
 
     // appends each score to the string while keeping track of count and total
-    for (std::size_t i{0}; guessesArray[i] != 0; ++i) {
+    for (std::size_t i{0}; guessesArray[i] != 0 && i < 10; ++i) {
         statString += ' ' + std::to_string(guessesArray[i]);
         total += guessesArray[i];
         ++count;

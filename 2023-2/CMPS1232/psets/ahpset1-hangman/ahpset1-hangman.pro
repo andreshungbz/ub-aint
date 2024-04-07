@@ -1,4 +1,4 @@
-QT -= gui
+QT = core
 
 CONFIG += c++11 console
 CONFIG -= app_bundle
@@ -21,7 +21,7 @@ HEADERS += \
         Player.h \
         Hangman.h
 
-# macOS/Linux build folders
+# Unix/Linux build folders
 unix {
     CONFIG(debug, debug|release) {
         DESTDIR = $$PWD/qmake-build-debug
