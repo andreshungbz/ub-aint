@@ -10,7 +10,7 @@
 // simply make an edit to the ahpset1-hangman.pro file e.g. # remove a comment
 // then the build process will work. Afterward, remove the edit and the build should succeed again.
 
-// IMPORTANT: the folder that holds all the source files and the wordlist.txt must be named ahpset1-hangman
+// IMPORTANT: the wordlist.txt file must be located in the project root directory
 
 // NOTES
 // 1. Hangman class's alphabetArray data member does NOT need to be ALPHABET_SIZE + 1. It can introduce errors.

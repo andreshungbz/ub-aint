@@ -35,25 +35,15 @@ constexpr char Hangman::N[Hangman::ASCII_ROWS][Hangman::ASCII_COLS];
 constexpr char Hangman::exclamation[Hangman::ASCII_ROWS][Hangman::ASCII_COLS];
 constexpr char Hangman::space[Hangman::ASCII_ROWS][Hangman::ASCII_COLS];
 
-
 Hangman::Hangman(const std::string& filename, const std::string& username) : player(username) { // NOLINT(*-pro-type-member-init)
     // construct pathname to word list for debug configurations
     std::string path{".."};
 
-    // CLION relative path to wordlist.txt: ../wordlist.txt
-    #if defined(__CLION_IDE__) // defined in CMakeLists.txt
-        #if defined(_WIN32) || defined(_WIN64)
-            path += '\\';
-        #else
-            path +='/';
-        #endif
-    // QT CREATOR relative path  to wordlist.txt ../ahpset1-hangman/wordlist.txt
-    #elif defined(__QT_CREATOR__) // defined in ahpset1-hangman.pro
-        #if defined(_WIN32) || defined(_WIN64)
-            path += "\\ahpset1-hangman\\";
-        #else
-            path += "/ahpset1-hangman/";
-        #endif
+    // create relative path for Windows and macOS/Linux
+    #if defined(_WIN32) || defined(_WIN64)
+        path += '\\';
+    #else
+        path +='/';
     #endif
 
     // append word list file
