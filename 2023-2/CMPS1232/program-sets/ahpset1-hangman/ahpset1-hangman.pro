@@ -25,5 +25,5 @@ DEFINES += __QT_CREATOR__
 
 # IMPORTANT: when compiling using QT Creator and the ahpset1-hangman.pro project file
 # on the UB school computers, the build process may hang half-way through. To fix that,
-# simply make a non-affecting edit to the ahpset1-hangman.pro file e.g. remove this comment block
+# simply make an edit to the ahpset1-hangman.pro file e.g. remove this comment block
 # then building will work. Afterward, remove the edit and the build should succeed.

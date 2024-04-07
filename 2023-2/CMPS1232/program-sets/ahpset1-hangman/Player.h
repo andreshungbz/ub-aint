@@ -5,50 +5,46 @@
 
 // Player Class Header
 
+// where appropriate, std::string parameters are made l-value references to const
+// to avoid expensive string class copying
+
 #ifndef AHPSET1_HANGMAN_PLAYER_H
 #define AHPSET1_HANGMAN_PLAYER_H
 
 
-#include <iomanip>
-#include <iostream>
-#include <sstream>
 #include <string>
 
 class Player {
 public:
-    // where appropriate, std::string parameters are made l-value references to const
-    // to avoid expensive string class copying
+    // constructor that sets the username and difficultyLevel
+    explicit Player(const std::string& username, unsigned int level = 1); // explicit avoids single-argument implicit conversions
 
-    // Player constructor
-    // explicit avoids single-argument implicit conversions
-    explicit Player(const std::string& username, unsigned int level = 1);
-
-    // setter for difficultyLevel with validation
+    // setter for difficultyLevel that validates range
     void setDifficultyLevel(unsigned int level);
 
     // getter for difficultyLevel
     int getDifficultyLevel() const;
 
-    // setter for username that accounts for 20-char limit
+    // setter for username with character limit validation
     void setUsername(const std::string& name);
 
     // getter for username
     std::string getUsername();
 
-    // member function that adds a game score to guessesArray
+    // function that adds a game score to guessesArray
     void setGuesses(unsigned int numGuesses);
 
-    // member function that shows game scores and average, returned as a string
+    // function that returns a string with game scores and average
     std::string generateStatistics();
 
-    // member function that sets all values in guessesArray to 0
+    // function that sets all values in guessesArray to 0
     void resetGuessesArray();
 
 private:
     int guessesArray[10]; // keeps track of the 10 most recent game scores
     char username[20]; // player's username
     unsigned int difficultyLevel; // chosen game difficulty
-    static const unsigned int MAX_DIFFICULTY_LEVEL {3}; // maximum difficulty available
+    static const unsigned int MAX_DIFFICULTY_LEVEL{3}; // maximum difficulty available
 };
 
 

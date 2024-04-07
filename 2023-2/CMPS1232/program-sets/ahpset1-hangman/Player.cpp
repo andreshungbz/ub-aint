@@ -6,25 +6,24 @@
 // Player Class Implementation
 
 #include "Player.h"
+#include <iomanip> // std::fixed, std::setprecision
+#include <sstream> // std::ostringstream
 
-// constructor sets the username and difficulty level and resets game score
 Player::Player(const std::string& username, unsigned int level) { // NOLINT(*-pro-type-member-init)
     setUsername(username);
     setDifficultyLevel(level);
     resetGuessesArray();
 }
 
-// sets the difficulty level within the minimum and maximum ranges
 void Player::setDifficultyLevel(unsigned int level) {
+    // ensure level is in valid range
     difficultyLevel = (level >= 1 && level <= MAX_DIFFICULTY_LEVEL) ? level : 1;
 }
 
-// returns difficulty level as int
 int Player::getDifficultyLevel() const {
     return static_cast<int>(difficultyLevel);
 }
 
-// sets the username character by character
 void Player::setUsername(const std::string& name) {
     std::size_t length{name.length()};
 
@@ -42,12 +41,10 @@ void Player::setUsername(const std::string& name) {
     username[length] = '\0';
 }
 
-// returns username
 std::string Player::getUsername() {
     return username;
 }
 
-// adds game score to array
 void Player::setGuesses(unsigned int numGuesses) {
     for (std::size_t i{0}; i < 10; ++i) {
         // if there is an available space in the array, assign score and return
@@ -62,7 +59,6 @@ void Player::setGuesses(unsigned int numGuesses) {
     guessesArray[0] = static_cast<int>(numGuesses);
 }
 
-// returns game statistics as a string
 std::string Player::generateStatistics() {
     // initial string for appending scores and average
     std::string statString{"Guesses:"};
@@ -78,7 +74,8 @@ std::string Player::generateStatistics() {
         ++count;
     }
 
-    double average{total / count};
+    // also check if count is 0
+    double average{count ? (total / count) : 0};
 
     // use ostringstream to set the precision of average in string concatenation
     // https://www.learncpp.com/cpp-tutorial/stdstring-construction-and-destruction/
@@ -91,7 +88,6 @@ std::string Player::generateStatistics() {
     return statString;
 }
 
-// sets all guesses to 0
 void Player::resetGuessesArray() {
     for (std::size_t i{0}; i < 10; ++i) {
         guessesArray[i] = 0;
