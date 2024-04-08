@@ -254,7 +254,7 @@ void Hangman::startGame() {
     std::cout << "Thank you for playing! Press any key to exit.";
 
     #if defined(_WIN32)
-        std::system("pause") // for Windows
+        std::system("pause"); // for Windows
     #endif
 
     std::getchar();
