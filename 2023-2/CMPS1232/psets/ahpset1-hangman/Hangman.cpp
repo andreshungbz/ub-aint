@@ -251,10 +251,12 @@ void Hangman::startGame() {
     #endif
 
     std::cout << "[CMPS1232] HANGMAN GAME by Andres Hung for Program Set 1\n";
-    std::cout << "Thank you for playing! Press any key to exit.";
+    std::cout << "Thank you for playing!\n";
 
     #if defined(_WIN32)
         std::system("pause"); // for Windows
+    #else
+        std::cout << "Press any key to exit . . .";
     #endif
 
     std::getchar();
