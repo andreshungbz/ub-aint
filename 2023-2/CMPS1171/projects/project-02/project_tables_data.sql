@@ -70,8 +70,8 @@ CREATE TABLE teachers (
     last_name TEXT NOT NULL,
     gender CHAR(1) NOT NULL CHECK (gender IN ('m', 'f', 'o')),
     salary NUMERIC(8, 2) NOT NULL,
-    contact_phone TEXT NOT NULL,
-    contact_email TEXT NOT NULL,
+    contact_phone TEXT NOT NULL UNIQUE,
+    contact_email TEXT NOT NULL UNIQUE,
     address INT, -- assume one main address
     FOREIGN KEY (address) REFERENCES addresses (address_id)
 );
@@ -84,8 +84,8 @@ CREATE TABLE parents (
     last_name TEXT NOT NULL,
     gender CHAR(1) NOT NULL CHECK (gender IN ('m', 'f', 'o')),
     profession TEXT NOT NULL,
-    contact_phone TEXT NOT NULL,
-    contact_email TEXT NOT NULL,
+    contact_phone TEXT NOT NULL UNIQUE,
+    contact_email TEXT NOT NULL UNIQUE,
     address INT, -- assume one main address
     FOREIGN KEY (address) REFERENCES addresses (address_id)
 );
