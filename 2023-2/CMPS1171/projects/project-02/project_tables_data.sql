@@ -26,14 +26,14 @@ GRANT ALL PRIVILEGES ON SCHEMA public TO project;
 /* CREATE TABLES */
 
 -- drop existing tables
-DROP TABLE IF EXISTS addresses CASCADE;
 DROP TABLE IF EXISTS districts CASCADE;
+DROP TABLE IF EXISTS addresses CASCADE;
 DROP TABLE IF EXISTS parent_student CASCADE;
 DROP TABLE IF EXISTS students CASCADE;
 DROP TABLE IF EXISTS parents CASCADE;
+DROP TABLE IF EXISTS teachers CASCADE;
 DROP TABLE IF EXISTS classrooms CASCADE;
 DROP TABLE IF EXISTS buildings CASCADE;
-DROP TABLE IF EXISTS teachers CASCADE;
 
 -- BUILDINGS and CLASSROOMS
 
@@ -46,7 +46,7 @@ CREATE TABLE buildings (
 CREATE TABLE classrooms (
     classroom_id SERIAL PRIMARY KEY,
     name TEXT NOT NULL,
-    has_projector BOOL NOT NULL,
+    student_capacity INT NOT NULL,
     building INT NOT NULL,
     FOREIGN KEY (building) REFERENCES buildings (building_id)
 );
@@ -94,8 +94,8 @@ CREATE TABLE students (
     student_id SERIAL PRIMARY KEY,
     first_name TEXT NOT NULL,
     last_name TEXT NOT NULL,
-    date_of_birth DATE NOT NULL,
     gender CHAR(1) NOT NULL CHECK (gender IN ('m', 'f', 'o')),
+    date_of_birth DATE NOT NULL,
     graduated DATE, -- NULL value indicates student has not graduated yet
     address INT,
     classroom INT NOT NULL, -- a preschool student only belongs to one classroom
@@ -116,15 +116,15 @@ CREATE TABLE parent_student (
 
 INSERT INTO buildings (name, classroom_capacity)
 VALUES
-    ('George Price', 30),
-    ('Dean Barrow', 35);
+    ('George Price', 20),
+    ('Manuel Esquivel', 25);
 
-INSERT INTO classrooms (name, has_projector, building)
+INSERT INTO classrooms (name, student_capacity, building)
 VALUES
-    ('Toucan', true, 1),
-    ('Tapir', false, 1),
-    ('Mahogany', true, 2),
-    ('Black Orchid', false, 2);
+    ('Toucan', 30, 1),
+    ('Tapir', 30, 1),
+    ('Mahogany', 25, 2),
+    ('Black Orchid', 25, 2);
 
 INSERT INTO districts
 VALUES
@@ -184,21 +184,22 @@ VALUES
     ('Albert', 'Neal', 'm', 'Retail Clerk', '555-4567', 'nealiobert@gmail.com', 18),
     ('Ruth', 'Neal', 'f', 'Consultant', '555-8901', 'ruthusher@gmail.com', 18);
 
-INSERT INTO students (first_name, last_name, date_of_birth, gender, graduated, address, classroom)
+INSERT INTO students (first_name, last_name, gender, date_of_birth, graduated, address, classroom)
 VALUES
-    ('Miguel', 'Vasquez', '2019-05-15', 'm', '2023-08-01', 11, 1),
-    ('Maria', 'Guerrero', '2018-11-20', 'f', '2022-08-01', 12, 2),
-    ('Michael', 'Flowers', '2021-03-10', 'm', NULL, 13, 3),
-    ('Sandra', 'Castillo', '2020-09-25', 'f', NULL, 14, 4),
-    ('David', 'Brown', '2022-07-01', 'm', NULL, 15, 1),
-    ('Martha', 'Reyes', '2020-12-12', 'f', NULL, 16, 2),
-    ('Daniel', 'Garcia', '2020-02-28', 'm', NULL, 17, 3),
-    ('Olivia', 'Neal', '2021-06-18', 'f', NULL, 18, 4),
-    ('Matthew', 'Neal', '2021-10-05', 'm', NULL, 18, 1),
-    ('Sophia', 'Neal', '2021-08-22', 'f', NULL, 18, 2);
+    ('Miguel', 'Vasquez', 'm', '2019-05-15', '2023-08-01', 11, 1),
+    ('Maria', 'Guerrero', 'f', '2018-11-20', '2022-08-01', 12, 2),
+    ('Michael', 'Flowers', 'm', '2021-03-10', NULL, 13, 3),
+    ('Sandra', 'Castillo', 'f', '2020-09-25', NULL, 14, 4),
+    ('David', 'Brown', 'm', '2022-07-01', NULL, 15, 1),
+    ('Martha', 'Reyes', 'f', '2020-12-12', NULL, 16, 2),
+    ('Daniel', 'Garcia', 'm', '2020-02-28', NULL, 17, 3),
+    ('Olivia', 'Neal', 'f', '2021-06-18', NULL, 18, 4),
+    ('Matthew', 'Neal', 'm', '2021-10-05', NULL, 18, 1),
+    ('Sophia', 'Neal', 'f', '2021-08-22', NULL, 18, 2);
 
 INSERT INTO parent_student (parent_id, student_id)
 VALUES
+    -- both parents can be listed, but only one is necessary
     (1, 1),
     (2, 2),
     (3, 3),
@@ -235,3 +236,70 @@ FROM students;
 
 SELECT *
 FROM parent_student;
+
+/* EXTRA */
+
+CREATE OR REPLACE FUNCTION update_ps_address()
+RETURNS TRIGGER
+AS $$
+DECLARE
+    v_record RECORD;
+BEGIN
+    -- prevent recursion of triggers on parents and students
+    IF pg_trigger_depth() > 2 THEN
+        RETURN NEW;
+    END IF;
+
+    IF TG_TABLE_NAME = 'parents' THEN
+        FOR v_record IN (
+            SELECT DISTINCT PS.student_id
+            FROM students S
+            INNER JOIN parent_student PS USING (student_id)
+            WHERE PS.parent_id = OLD.parent_id
+        ) LOOP
+            IF NEW.address IS NOT NULL AND NEW.address <> OLD.address THEN
+                UPDATE students
+                SET address = NEW.address
+                WHERE student_id = v_record.student_id;
+
+                RAISE NOTICE 'student id % address updated.', v_record.student_id;
+            END IF;
+        END LOOP;
+    ELSEIF TG_TABLE_NAME = 'students' THEN
+        FOR v_record IN (
+            SELECT DISTINCT PS.parent_id
+            FROM parents P
+            INNER JOIN parent_student PS USING (parent_id)
+            WHERE PS.student_id = OLD.student_id
+        ) LOOP
+            IF NEW.address IS NOT NULL AND NEW.address <> OLD.address THEN
+                UPDATE parents
+                SET address = NEW.address
+                WHERE parent_id = v_record.parent_id;
+
+                RAISE NOTICE 'parent id % address updated.', v_record.parent_id;
+            END IF;
+        END LOOP;
+    END IF;
+
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+DROP TRIGGER IF EXISTS update_p_address_trigger
+ON parents;
+
+CREATE TRIGGER update_p_address_trigger
+AFTER UPDATE OF address
+ON parents
+FOR EACH ROW
+EXECUTE PROCEDURE update_ps_address();
+
+DROP TRIGGER IF EXISTS update_s_address_trigger
+ON students;
+
+CREATE TRIGGER update_s_address_trigger
+AFTER UPDATE OF address
+ON students
+FOR EACH ROW
+EXECUTE PROCEDURE update_ps_address();
