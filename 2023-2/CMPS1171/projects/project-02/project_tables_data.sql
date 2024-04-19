@@ -96,7 +96,7 @@ CREATE TABLE students (
     last_name TEXT NOT NULL,
     gender CHAR(1) NOT NULL CHECK (gender IN ('m', 'f', 'o')),
     date_of_birth DATE NOT NULL,
-    graduated DATE, -- NULL value indicates student has not graduated yet
+    graduated DATE DEFAULT NULL, -- NULL value indicates student has not graduated yet
     address INT,
     classroom INT NOT NULL, -- a preschool student only belongs to one classroom
     FOREIGN KEY (address) REFERENCES addresses (address_id),
@@ -116,8 +116,8 @@ CREATE TABLE parent_student (
 
 INSERT INTO buildings (name, classroom_capacity)
 VALUES
-    ('George Price', 20),
-    ('Manuel Esquivel', 25);
+    ('George Price', 2),
+    ('Manuel Esquivel', 2);
 
 INSERT INTO classrooms (name, student_capacity, building)
 VALUES
@@ -303,3 +303,21 @@ AFTER UPDATE OF address
 ON students
 FOR EACH ROW
 EXECUTE PROCEDURE update_ps_address();
+
+/*
+SELECT *
+FROM parents;
+
+SELECT *
+FROM students;
+
+UPDATE parents
+SET address = 11
+WHERE parent_id = 9;
+
+SELECT *
+FROM parents;
+
+SELECT *
+FROM students;
+*/
