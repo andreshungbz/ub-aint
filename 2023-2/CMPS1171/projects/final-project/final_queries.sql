@@ -4,14 +4,14 @@
 
 /* QUERIES */
 
--- Query 1: Retrieve the usernames of users who have uploaded photos and have a gender preference for the opposite gender
+-- Query 1: Retrieve the usernames of users who have uploaded photos and have a gender preference for male
 -- Requirement: Join
 SELECT u.username
 FROM users u
 JOIN user_photos up ON u.utopia_id = up.uploader_id
 JOIN user_gender_preferences ugp ON u.utopia_id = ugp.utopia_id
 JOIN genders g ON ugp.gender_id = g.gender_id
-WHERE g.gender <> (SELECT gender FROM genders WHERE gender_id = u.gender);
+WHERE g.gender = (SELECT gender FROM genders WHERE gender_id = 1);
 
 -- Query 2: Retrieve the total number of conversations for each user, including users with no conversations
 -- Requirement: Left Join and count()
@@ -22,7 +22,7 @@ GROUP BY u.username;
 
 -- Query 3: Retrieve the usernames of users who have blocked other users and have not uploaded any photos
 -- Requirement: Join and subquery
-SELECT u.username
+SELECT DISTINCT u.username
 FROM users u
 JOIN user_block_lists ub ON u.utopia_id = ub.blocker
 WHERE ub.blockee IN (SELECT utopia_id FROM users)
