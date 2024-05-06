@@ -7,7 +7,7 @@ City::City(const std::string& newCityName, int newPopulation) {
 
 void City::setCityName(const std::string& newCityName) {
     std::size_t length{newCityName.length()};
-    length =(length < 30? length : 29);
+    length =(length < 30 ? length : 29);
     newCityName.copy(cityname, length);
     cityname[length] = '\0';
 }
@@ -25,5 +25,5 @@ int City::getPopulation() const {
 }
 
 void City::printDetails(std::ostream& output) const {
-    output << cityname << ' ' << population << '\n';
+    output << getCityName() << ' ' << getPopulation() << '\n';
 }
