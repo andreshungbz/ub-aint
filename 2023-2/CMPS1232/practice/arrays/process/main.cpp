@@ -31,7 +31,7 @@ int process(const int a[], const int b[], int size) {
         int sum{0};
 
         for (int j{0}; j < rows - 1; ++j) {
-            sum += temp[i][j];
+            sum += temp[j][i];
         }
 
         temp[rows - 1][i] = sum;
